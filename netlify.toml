@@ -6,27 +6,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Make pretty URLs work
-[[redirects]]
-  from = "/caregiver"
-  to = "/caregiver/"
-  status = 301
-  force = true
+[build]
+  publish = "site"
+  command = ""
 
-[[redirects]]
-  from = "/nursing-appeal"
-  to = "/nursing-appeal/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/tenant"
-  to = "/tenant/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/demand-letter"
-  to = "/demand-letter/"
-  status = 301
-  force = true
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
