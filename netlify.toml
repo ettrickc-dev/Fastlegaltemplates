@@ -5,11 +5,3 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-
-[build]
-  publish = "site"
-  command = ""
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
