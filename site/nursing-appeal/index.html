@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -7,12 +7,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/config.js"></script>
 </head>
-<body class="p-6 bg-gray-50">
+<body class="bg-gray-50 p-6">
   <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2">Nursing License Appeal Pack</h1>
-  <p class="text-gray-600 mb-6">Admin hearing–ready packet.</p>
+  <h1 class="text-3xl font-extrabold mt-2 text-gray-900">Nursing License Appeal Pack</h1>
+  <p class="text-gray-600 mb-6">For RN or LPN denials and Board of Nursing appeals.</p>
 
-  <div class="bg-white p-4 rounded-lg border max-w-xl">
+  <div class="bg-white p-6 rounded-xl border max-w-xl">
     <label class="block text-sm font-medium">Your Email</label>
     <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
     <label class="block text-sm font-medium">Your Name</label>
@@ -20,7 +20,7 @@
 
     <button id="buyBtn" class="bg-emerald-600 text-white px-4 py-2 rounded w-full">Buy Now</button>
     <button id="mockBtn" class="mt-2 bg-gray-700 text-white px-4 py-2 rounded w-full">Try Without Payment (Mock)</button>
-    <p class="text-xs text-gray-500 mt-2">Price is set in Stripe (later). Mock works now.</p>
+    <p class="text-xs text-gray-500 mt-2">Mock mode lets you test download flow.</p>
   </div>
 
   <script>
@@ -28,7 +28,7 @@
     const PRICE_ID = cfg.PRICE_IDS.nursing;
 
     function fakeDownload() {
-      const text = 'Your Nursing Appeal Pack (MOCK). Replace with real ZIP later.';
+      const text = 'Nursing License Appeal Pack (MOCK). Replace with real ZIP later.';
       const blob = new Blob([text], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -44,10 +44,9 @@
 
     document.getElementById('buyBtn').addEventListener('click', () => {
       if (cfg.USE_MOCK) {
-        alert('Mock mode ON. Use the gray button to simulate.');
+        alert('Mock mode ON. Use the gray button.');
         return;
       }
-      // real checkout will go here later
       alert('Real checkout will be enabled later.');
     });
   </script>
