@@ -1,46 +1,113 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caregiver Services Agreement</title>
+<title>Caregiver Services Agreement Generator</title>
+
+<!-- Tailwind (UI) -->
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- FileSaver + JSZip (client-side mock download only) -->
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<!-- Stripe Buy Button (unused in MOCK mode, used later when USE_MOCK=false) -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
+<!-- Shared config for this site -->
+<script src="/config.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+  :root{--primary-color:#059669;--secondary-color:#f59e0b;--light-bg:#f0fdf4;}
+  body{font-family:'Inter',sans-serif;background-color:#f3f4f6;}
+  .watermark{color:rgba(5,150,105,0.1);font-size:3rem;font-weight:900;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);pointer-events:none;z-index:1000;opacity:0.8;white-space:nowrap;}
+  .preview-box{min-height:500px;overflow-y:auto;white-space:pre-wrap;tab-size:4;font-family:monospace;line-height:1.6;}
+  .unlocked .watermark{display:none!important;}
+</style>
 </head>
-<body class="p-6 bg-gray-50">
+
+<body class="p-4 md:p-8">
   <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2">Caregiver Services Agreement</h1>
-  <p class="text-gray-600 mb-4">Employee (W-2) or Independent Contractor (1099).</p>
+  <div id="contract-generator-app" class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-  <!-- Email + Name -->
-  <div class="bg-white p-4 rounded-lg border max-w-xl">
-    <label class="block text-sm font-medium">Your Email</label>
-    <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
-    <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-3" placeholder="Jane Doe">
-    <button id="startCheckout" class="bg-emerald-600 text-white px-4 py-2 rounded">Buy Now</button>
-    <p class="text-xs text-gray-500 mt-2">Price is set by Stripe (use your real Price ID below).</p>
-  </div>
+    <!-- Left: Form + Purchase -->
+    <div class="lg:col-span-2 space-y-6">
+      <header class="text-center lg:text-left">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-1">Caregiver Services Agreement Generator</h1>
+        <p class="text-lg text-gray-600">Customize your legally structured contract for an Employee (W-2) or Independent Contractor (1099).</p>
+      </header>
 
-  <!-- Simple preview (what gets turned into files) -->
-  <div class="mt-6 bg-white p-4 rounded-lg border">
-    <div class="relative min-h-[200px]">
-      <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
-Caregiver Agreement draft for: (fill your name above)
+      <!-- Minimal contact + controls (works now) -->
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium">Your Email</label>
+            <input id="buyerEmail" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3" placeholder="you@example.com">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Your Name</label>
+            <input id="buyerName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3" placeholder="Jane Doe">
+          </div>
+        </div>
+
+        <!-- Big Continue button to simulate filling -->
+        <div class="mt-6">
+          <button id="mockFill" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg border">Auto-Fill Example Draft</button>
+        </div>
+
+        <!-- Purchase controls -->
+        <div class="mt-8 pt-4 border-t">
+          <div class="flex flex-col md:flex-row gap-3">
+            <button id="buyNow" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition">Buy Now</button>
+            <button id="mock" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg shadow-md transition">Try Without Payment (Mock)</button>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">Price is configured in Stripe (Price ID).</p>
+        </div>
       </div>
-      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">
-        UNPAID DRAFT
+
+      <!-- (Optional) Advanced multi-step UI could go here later -->
+    </div>
+
+    <!-- Right: Live Preview -->
+    <div class="lg:col-span-1">
+      <h2 class="text-xl font-bold text-gray-700 mb-3">Dynamic Contract Preview</h2>
+      <div id="preview-box" class="preview-box relative bg-white p-4 md:p-6 rounded-xl shadow-lg border-2 border-dashed border-gray-300">
+        <div class="watermark">UNPAID DRAFT</div>
+        <div id="contract-preview-content" class="text-gray-800 text-sm">Start filling out the fields to generate your personalized agreement!</div>
       </div>
     </div>
   </div>
 
 <script>
-// 👇 REPLACE this with your real Stripe Price ID from your Stripe Dashboard.
-// It should look like: "price_12345ABC..."
-const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo";
+// ===== CONFIG =====
+const PRODUCT_KEY = 'caregiver'; // maps to PRICE_IDS.caregiver in /site/config.js
 
+function CFG() { return window.APP_CONFIG || { USE_MOCK:true, PRICE_IDS:{}, SUCCESS_PATHS:{} }; }
+
+// ===== SIMPLE PREVIEW CONTENT (you can expand later) =====
+function buildPreview(data){
+  return `CAREGIVER SERVICES AGREEMENT
+
+Parties:
+  Employer/Client: ${data.name || 'Client Name'}
+  Caregiver/Contractor Email: ${data.email || 'email@example.com'}
+
+Scope:
+  Duties include companionship and agreed household tasks.
+  Classification selected later in full form (Employee vs. Independent Contractor).
+
+Compensation:
+  Final compensation terms set during checkout workflow.
+
+Legal Note:
+  This is a draft preview. The paid download includes a .ZIP with DOCX files.`;
+}
+
+// ===== SAVE DRAFT to Netlify Function =====
 async function saveDraft() {
   const email = document.getElementById('buyerEmail').value.trim();
-  const name = document.getElementById('buyerName').value.trim();
-  const product = "Caregiver Agreement";
-  const content = document.getElementById('preview').innerText;
-
+  const name  = document.getElementById('buyerName').value.trim();
+  const content = document.getElementById('contract-preview-content').innerText;
+  const product = 'Caregiver Agreement';
   const r = await fetch('/.netlify/functions/save-draft', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email, name, product, content })
@@ -49,34 +116,55 @@ async function saveDraft() {
   return r.json(); // { draftId }
 }
 
-document.getElementById('startCheckout').addEventListener('click', async () => {
-  try {
-    const email = document.getElementById('buyerEmail').value.trim();
-    if(!email){ alert('Enter your email'); return; }
+// ===== UI HOOKS =====
+const $ = (id)=>document.getElementById(id);
+$('mockFill').addEventListener('click', ()=>{
+  const email = $('buyerEmail').value.trim() || 'john@example.com';
+  const name  = $('buyerName').value.trim() || 'John Smith';
+  $('contract-preview-content').innerText = buildPreview({ email, name });
+});
 
+$('mock').addEventListener('click', ()=>{
+  // Client-side mock download
+  const blob = new Blob(
+    ['Mock Caregiver Agreement\n(Preview only — no payment)'],
+    { type:'text/plain' }
+  );
+  saveAs(blob, 'Caregiver_Agreement_Preview.txt');
+  // jump to success page (mock)
+  location.href = '/caregiver/success.html';
+});
+
+$('buyNow').addEventListener('click', async ()=>{
+  const cfg = CFG();
+  if (cfg.USE_MOCK) {
+    alert('Mock mode is ON. To use Stripe later, set USE_MOCK:false in /site/config.js and add your environment variables.');
+    return;
+  }
+  try {
+    const email = $('buyerEmail').value.trim();
+    if(!email){ alert('Enter your email'); return; }
     const { draftId } = await saveDraft();
+    const priceId = cfg.PRICE_IDS[PRODUCT_KEY];
+    const successPath = cfg.SUCCESS_PATHS[PRODUCT_KEY] || '/caregiver/success.html';
 
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        draftId,
-        email,
-        priceId: PRICE_ID,
-        successPath: '/caregiver/success.html'
-      })
+      body: JSON.stringify({ draftId, email, priceId, successPath })
     });
-
-    if(!r.ok){
-      const t = await r.text().catch(()=> '');
-      alert('Problem starting checkout. ' + t);
-      return;
-    }
+    if(!r.ok){ alert('Checkout failed'); return; }
     const { url } = await r.json();
-    location.href = url; // go to Stripe Checkout
+    location.href = url;
   } catch (e) {
     console.error(e);
-    alert('Problem starting checkout.');
+    alert('Problem starting checkout');
   }
+});
+
+// init preview
+document.addEventListener('DOMContentLoaded', ()=>{
+  $('contract-preview-content').innerText = buildPreview({ email:'', name:'' });
 });
 </script>
 </body></html>
+
