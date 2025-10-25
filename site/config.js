@@ -1,18 +1,15 @@
-// site/config.js
-// MOCK mode lets you click through without Netlify/Stripe/Brevo yet.
 window.APP_CONFIG = {
-  USE_MOCK: true,                            // <-- true = no backend required
-  ENDPOINT_BASE: '/.not-configured',         // ignore for now
+  USE_MOCK: true, // change to false later when Stripe live
   PRICE_IDS: {
-    caregiver: 'price_XXXX_CAREGIVER',
-    nursing: 'price_XXXX_NURSING',
-    tenant: 'price_XXXX_TENANT',
-    demand: 'price_XXXX_DEMAND'
+    caregiver: 'price_CAREGIVER',
+    divorce: 'price_DIVORCE',
+    estate: 'price_ESTATE',
+    nursing: 'price_NURSING'
   },
   SUCCESS_PATHS: {
     caregiver: '/caregiver/success.html',
-    nursing: '/nursing-appeal/success.html',
-    tenant: '/tenant/success.html',
-    demand: '/demand-letter/success.html'
+    divorce: '/divorce/success.html',
+    estate: '/small-estate/success.html',
+    nursing: '/nursing-appeal/success.html'
   }
 };
