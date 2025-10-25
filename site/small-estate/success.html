@@ -1,8 +1,71 @@
-<!doctype html><html><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Thanks! Your Estate Packet Is Ready</title>
-</head><body style="font-family:sans-serif;padding:2rem">
-<h1>Payment received (mock mode).</h1>
-<p>Your Small Estate packet will download automatically when live payments are active.</p>
-<p><a href="/">Back to Home</a></p>
-</body></html>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Thanks! Preparing your download…</title>
+  <script src="/config.js"></script>
+  <style>
+    body { font-family: system-ui, Arial; padding: 24px; }
+    .box { max-width: 680px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Payment received! Your download will start automatically…</h1>
+    <p id="msg">Checking your order…</p>
+    <p><a href="/">← Back to Home</a></p>
+  </div>
+
+<script>
+(async () => {
+  // waits for config to load
+  await new Promise(r => setTimeout(r, 50));
+  const USE_MOCK = window.APP_CONFIG?.USE_MOCK === true;
+
+  const p = new URLSearchParams(location.search);
+  const session_id = p.get('session_id');
+
+  const msg = document.getElementById('msg');
+
+  if (USE_MOCK) {
+    // mock success — no server call, just show success
+    msg.textContent = 'Mock mode: your file has been sent. (No payment was processed.)';
+    // Optional: create a small sample download
+    const blob = new Blob(
+      ['Your mock download is ready.\nThank you!'],
+      { type: 'text/plain' }
+    );
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Your_File.txt';
+    a.click();
+    return;
+  }
+
+  // REAL MODE — need a session_id
+  if(!session_id){
+    msg.textContent = 'Missing session_id. Please check your email for the backup copy.';
+    return;
+  }
+
+  try {
+    const r = await fetch('/.netlify/functions/claim-download', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ sessionId: session_id })
+    });
+    if(!r.ok){
+      msg.textContent = 'Could not verify payment. Please check your email for the backup copy.';
+      return;
+    }
+    const { downloadUrl } = await r.json();
+    msg.textContent = 'Verified! Starting download…';
+    location.href = downloadUrl; // auto-download
+  } catch (e) {
+    console.error(e);
+    msg.textContent = 'We had an issue preparing your file. Please check your email for the backup copy.';
+  }
+})();
+</script>
+</body>
+</html>
