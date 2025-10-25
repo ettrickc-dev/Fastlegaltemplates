@@ -1,6 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!doctype html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nursing License Appeal Pack</title>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -35,15 +33,12 @@ Draft: Nursing License Appeal — Starter content goes here…
   </div>
 
 <script>
-const PRODUCT_KEY = 'nursing'; // matches config PRICE_IDS.nursing
-
-function getCfg() {
-  return window.APP_CONFIG || { USE_MOCK:true, PRICE_IDS:{}, SUCCESS_PATHS:{} };
-}
+const PRODUCT_KEY = 'nursing'; // PRICE_IDS.nursing
+function CFG(){ return window.APP_CONFIG || { USE_MOCK:true, PRICE_IDS:{}, SUCCESS_PATHS:{} }; }
 
 async function saveDraft() {
   const email = document.getElementById('buyerEmail').value.trim();
-  const name = document.getElementById('buyerName').value.trim();
+  const name  = document.getElementById('buyerName').value.trim();
   const content = document.getElementById('preview').innerText;
   const product = 'Nursing License Appeal';
   const r = await fetch('/.netlify/functions/save-draft', {
@@ -51,34 +46,24 @@ async function saveDraft() {
     body: JSON.stringify({ email, name, product, content })
   });
   if(!r.ok) throw new Error('save-draft failed');
-  return r.json(); // { draftId }
+  return r.json();
 }
 
-document.getElementById('mock').addEventListener('click', async () => {
-  const blob = new Blob(
-    ['Mock Nursing Appeal Pack\n(Preview only — no payment)'],
-    { type:'text/plain' }
-  );
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'Nursing_Appeal_Pack.txt';
-  a.click();
+document.getElementById('mock').addEventListener('click', ()=>{
+  const blob = new Blob(['Mock Nursing Appeal Pack\n(Preview only — no payment)'], { type:'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='Nursing_Appeal_Pack.txt'; a.click();
   location.href = '/nursing-appeal/success.html';
 });
 
-document.getElementById('buyNow').addEventListener('click', async () => {
-  const cfg = getCfg();
-  if (cfg.USE_MOCK) {
-    alert('Mock mode is ON. Turn it OFF in /site/config.js to use Stripe later.');
-    return;
-  }
+document.getElementById('buyNow').addEventListener('click', async ()=>{
+  const cfg = CFG();
+  if (cfg.USE_MOCK) { alert('Mock mode is ON. Turn it OFF in /site/config.js to use Stripe later.'); return; }
   try {
     const email = document.getElementById('buyerEmail').value.trim();
     if(!email){ alert('Enter your email'); return; }
     const { draftId } = await saveDraft();
     const priceId = cfg.PRICE_IDS[PRODUCT_KEY];
     const successPath = cfg.SUCCESS_PATHS[PRODUCT_KEY] || '/nursing-appeal/success.html';
-
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ draftId, email, priceId, successPath })
@@ -86,10 +71,7 @@ document.getElementById('buyNow').addEventListener('click', async () => {
     if(!r.ok){ alert('Checkout failed'); return; }
     const { url } = await r.json();
     location.href = url;
-  } catch (e) {
-    console.error(e); alert('Problem starting checkout');
-  }
+  } catch (e) { console.error(e); alert('Problem starting checkout'); }
 });
 </script>
-</body>
-</html>
+</body></html>
