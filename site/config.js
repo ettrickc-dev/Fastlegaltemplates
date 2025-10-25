@@ -1,5 +1,6 @@
+// site/config.js
 window.APP_CONFIG = {
-  USE_MOCK: true, // change to false later when Stripe live
+  USE_MOCK: true, // leave true for now (mock mode)
   PRICE_IDS: {
     caregiver: 'price_CAREGIVER',
     divorce: 'price_DIVORCE',
