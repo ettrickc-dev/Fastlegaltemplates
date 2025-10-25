@@ -1,54 +1,96 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Uncontested Divorce (NY)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/config.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uncontested Divorce Agreement Generator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="/config.js"></script>
+<style>body{font-family:system-ui,Arial}</style>
 </head>
-<body class="bg-gray-50 p-6">
+<body class="p-6 bg-gray-50">
   <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2 text-gray-900">Uncontested Divorce (NY)</h1>
-  <p class="text-gray-600 mb-6">Court-approved packet for couples without children of the marriage.</p>
+  <h1 class="text-3xl font-extrabold mt-2">Uncontested Divorce Package</h1>
+  <p class="text-gray-600 mb-4">Prepare a clean, ready-to-file packet.</p>
 
-  <div class="bg-white p-6 rounded-xl border max-w-xl">
+  <div class="bg-white p-4 rounded-lg border max-w-xl">
     <label class="block text-sm font-medium">Your Email</label>
     <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
     <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-4" placeholder="Jane Doe">
+    <input id="buyerName" class="border rounded p-2 w-full mb-3" placeholder="Jane Doe">
 
-    <button id="buyBtn" class="bg-emerald-600 text-white px-4 py-2 rounded w-full">Buy Now</button>
-    <button id="mockBtn" class="mt-2 bg-gray-700 text-white px-4 py-2 rounded w-full">Try Without Payment (Mock)</button>
-    <p class="text-xs text-gray-500 mt-2">Mock mode lets you test before live payments.</p>
+    <div class="flex gap-2">
+      <button id="buyNow" class="bg-emerald-600 text-white px-4 py-2 rounded">Buy Now</button>
+      <button id="mock" class="bg-gray-700 text-white px-4 py-2 rounded">Try Without Payment (Mock)</button>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">Price is configured in Stripe (Price ID).</p>
   </div>
 
-  <script>
-    const cfg = window.APP_CONFIG;
-    const PRICE_ID = cfg.PRICE_IDS.divorce;
+  <div class="mt-6 bg-white p-4 rounded-lg border">
+    <div class="relative min-h-[200px]">
+      <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
+Draft: Uncontested Divorce — Starter content goes here…
+      </div>
+      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">UNPAID DRAFT</div>
+    </div>
+  </div>
 
-    function fakeDownload() {
-      const text = 'Uncontested Divorce Packet (MOCK). Replace with real ZIP later.';
-      const blob = new Blob([text], { type: 'text/plain' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Uncontested_Divorce_Packet.txt';
-      a.click();
-    }
+<script>
+const PRODUCT_KEY = 'divorce'; // matches config PRICE_IDS.divorce
 
-    document.getElementById('mockBtn').addEventListener('click', () => {
-      alert('Mock purchase complete. Starting download…');
-      fakeDownload();
-      location.href = cfg.SUCCESS_PATHS.divorce;
+function getCfg() {
+  return window.APP_CONFIG || { USE_MOCK:true, PRICE_IDS:{}, SUCCESS_PATHS:{} };
+}
+
+async function saveDraft() {
+  const email = document.getElementById('buyerEmail').value.trim();
+  const name = document.getElementById('buyerName').value.trim();
+  const content = document.getElementById('preview').innerText;
+  const product = 'Uncontested Divorce';
+  const r = await fetch('/.netlify/functions/save-draft', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, name, product, content })
+  });
+  if(!r.ok) throw new Error('save-draft failed');
+  return r.json(); // { draftId }
+}
+
+document.getElementById('mock').addEventListener('click', async () => {
+  // mock: create a small local file and "redirect" to success
+  const blob = new Blob(
+    ['Mock Uncontested Divorce Packet\n(Preview only — no payment)'],
+    { type:'text/plain' }
+  );
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Uncontested_Divorce_Packet.txt';
+  a.click();
+  location.href = '/divorce/success.html';
+});
+
+document.getElementById('buyNow').addEventListener('click', async () => {
+  const cfg = getCfg();
+  if (cfg.USE_MOCK) {
+    alert('Mock mode is ON. Turn it OFF in /site/config.js to use Stripe later.');
+    return;
+  }
+  try {
+    const email = document.getElementById('buyerEmail').value.trim();
+    if(!email){ alert('Enter your email'); return; }
+    const { draftId } = await saveDraft();
+    const priceId = cfg.PRICE_IDS[PRODUCT_KEY];
+    const successPath = cfg.SUCCESS_PATHS[PRODUCT_KEY] || '/divorce/success.html';
+
+    const r = await fetch('/.netlify/functions/create-checkout', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ draftId, email, priceId, successPath })
     });
-
-    document.getElementById('buyBtn').addEventListener('click', () => {
-      if (cfg.USE_MOCK) {
-        alert('Mock mode ON. Use the gray button to simulate.');
-        return;
-      }
-      alert('Real checkout will be enabled later.');
-    });
-  </script>
+    if(!r.ok){ alert('Checkout failed'); return; }
+    const { url } = await r.json();
+    location.href = url;
+  } catch (e) {
+    console.error(e); alert('Problem starting checkout');
+  }
+});
+</script>
 </body>
 </html>
