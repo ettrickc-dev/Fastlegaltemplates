@@ -1,77 +1,75 @@
-<!doctype html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nursing License Appeal Pack</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="/config.js"></script>
-<style>body{font-family:system-ui,Arial}</style>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Nursing License Appeal Pack</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="p-6 bg-gray-50">
+<body class="bg-gray-50 p-6">
   <a href="/" class="text-sm text-gray-600">&larr; Home</a>
   <h1 class="text-3xl font-extrabold mt-2">Nursing License Appeal Pack</h1>
-  <p class="text-gray-600 mb-4">Admin hearing-ready packet for denials or discipline.</p>
+  <p class="text-gray-600 mb-4">Admin hearing-ready packet.</p>
 
   <div class="bg-white p-4 rounded-lg border max-w-xl">
     <label class="block text-sm font-medium">Your Email</label>
     <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
     <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-3" placeholder="Jane Doe">
+    <input id="buyerName" class="border rounded p-2 w-full mb-4" placeholder="Jane Doe">
 
-    <div class="flex gap-2">
-      <button id="buyNow" class="bg-emerald-600 text-white px-4 py-2 rounded">Buy Now</button>
-      <button id="mock" class="bg-gray-700 text-white px-4 py-2 rounded">Try Without Payment (Mock)</button>
-    </div>
-    <p class="text-xs text-gray-500 mt-2">Price is configured in Stripe (Price ID).</p>
+    <button id="buyNow" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded w-full">
+      Buy Now
+    </button>
+    <p class="text-xs text-gray-500 mt-2">You will be redirected to Stripe Checkout.</p>
   </div>
 
   <div class="mt-6 bg-white p-4 rounded-lg border">
-    <div class="relative min-h-[200px]">
+    <div class="relative min-h-[160px]">
       <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
-Draft: Nursing License Appeal — Starter content goes here…
+Draft: Nursing Appeal Pack preview content…
       </div>
-      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">UNPAID DRAFT</div>
+      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">
+        UNPAID DRAFT
+      </div>
     </div>
   </div>
 
 <script>
-const PRODUCT_KEY = 'nursing'; // PRICE_IDS.nursing
-function CFG(){ return window.APP_CONFIG || { USE_MOCK:true, PRICE_IDS:{}, SUCCESS_PATHS:{} }; }
+const PRICE_ID = "price_XXXX_NURSING"; // 🔁 REPLACE
+const SUCCESS_PATH = "/nursing-appeal/success.html";
+
+function $(id){ return document.getElementById(id); }
 
 async function saveDraft() {
-  const email = document.getElementById('buyerEmail').value.trim();
-  const name  = document.getElementById('buyerName').value.trim();
-  const content = document.getElementById('preview').innerText;
-  const product = 'Nursing License Appeal';
+  const email = $('buyerEmail').value.trim();
+  const name  = $('buyerName').value.trim();
+  const product = "Nursing License Appeal Pack";
+  const content = $('preview').innerText || 'Draft content';
   const r = await fetch('/.netlify/functions/save-draft', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email, name, product, content })
   });
-  if(!r.ok) throw new Error('save-draft failed');
+  if(!r.ok){ throw new Error('save-draft failed'); }
   return r.json();
 }
 
-document.getElementById('mock').addEventListener('click', ()=>{
-  const blob = new Blob(['Mock Nursing Appeal Pack\n(Preview only — no payment)'], { type:'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='Nursing_Appeal_Pack.txt'; a.click();
-  location.href = '/nursing-appeal/success.html';
-});
-
-document.getElementById('buyNow').addEventListener('click', async ()=>{
-  const cfg = CFG();
-  if (cfg.USE_MOCK) { alert('Mock mode is ON. Turn it OFF in /site/config.js to use Stripe later.'); return; }
+$('buyNow').addEventListener('click', async () => {
   try {
-    const email = document.getElementById('buyerEmail').value.trim();
+    const email = $('buyerEmail').value.trim();
     if(!email){ alert('Enter your email'); return; }
     const { draftId } = await saveDraft();
-    const priceId = cfg.PRICE_IDS[PRODUCT_KEY];
-    const successPath = cfg.SUCCESS_PATHS[PRODUCT_KEY] || '/nursing-appeal/success.html';
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ draftId, email, priceId, successPath })
+      body: JSON.stringify({ draftId, email, priceId: PRICE_ID, successPath: SUCCESS_PATH })
     });
     if(!r.ok){ alert('Checkout failed'); return; }
     const { url } = await r.json();
     location.href = url;
-  } catch (e) { console.error(e); alert('Problem starting checkout'); }
+  } catch (e) {
+    console.error(e);
+    alert('Problem starting checkout');
+  }
 });
 </script>
-</body></html>
+</body>
+</html>
