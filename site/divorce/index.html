@@ -1,75 +1,268 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Uncontested Divorce Packet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Uncontested Divorce — Fast Legal Templates</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+  body{background:#f8fafc}
+  .wm:after{
+    content:"UNPAID DRAFT";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:56px; font-weight:900; color:rgba(16,185,129,0.08); pointer-events:none;
+    transform:rotate(-12deg);
+  }
+</style>
 </head>
-<body class="bg-gray-50 p-6">
-  <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2">Uncontested Divorce Packet</h1>
-  <p class="text-gray-600 mb-4">Simple step-by-step packet.</p>
+<body class="min-h-screen">
+  <header class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="text-sm text-gray-600">&larr; Home</a>
+    <h1 class="text-xl sm:text-2xl font-extrabold text-emerald-700">Uncontested Divorce (NY)</h1>
+  </header>
 
-  <div class="bg-white p-4 rounded-lg border max-w-xl">
-    <label class="block text-sm font-medium">Your Email</label>
-    <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
-    <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-4" placeholder="Jane Doe">
+  <main class="max-w-6xl mx-auto px-4 pb-16 grid lg:grid-cols-2 gap-6">
+    <!-- LEFT: FORM -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Answer these questions</h2>
 
-    <button id="buyNow" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded w-full">
-      Buy Now
-    </button>
-    <p class="text-xs text-gray-500 mt-2">You will be redirected to Stripe Checkout.</p>
-  </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- delivery -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Email (for delivery)</label>
+          <input id="buyerEmail" class="mt-1 w-full border rounded-lg p-2" placeholder="you@example.com" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Full Name</label>
+          <input id="buyerName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe" />
+        </div>
 
-  <div class="mt-6 bg-white p-4 rounded-lg border">
-    <div class="relative min-h-[160px]">
-      <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
-Draft: Uncontested Divorce Packet preview content…
+        <!-- case basics -->
+        <div>
+          <label class="block text-sm font-medium">County of Filing (NY)</label>
+          <input id="county" class="mt-1 w-full border rounded-lg p-2" placeholder="Westchester" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Action Venue (Supreme Court)</label>
+          <input id="venue" class="mt-1 w-full border rounded-lg p-2" placeholder="Supreme Court of the State of New York, County of Westchester" />
+        </div>
+
+        <!-- parties -->
+        <div>
+          <label class="block text-sm font-medium">Plaintiff (Your Legal Name)</label>
+          <input id="plaintiffName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane A. Doe" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Defendant (Spouse Legal Name)</label>
+          <input id="defendantName" class="mt-1 w-full border rounded-lg p-2" placeholder="John B. Doe" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Plaintiff Address</label>
+          <input id="plaintiffAddress" class="mt-1 w-full border rounded-lg p-2" placeholder="123 Main St, Scarsdale, NY 10583" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Defendant Address</label>
+          <input id="defendantAddress" class="mt-1 w-full border rounded-lg p-2" placeholder="45 Oak Ave, Yonkers, NY 10701" />
+        </div>
+
+        <!-- marriage details -->
+        <div>
+          <label class="block text-sm font-medium">Date of Marriage</label>
+          <input id="dom" type="date" class="mt-1 w-full border rounded-lg p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Place of Marriage (City/State/Country)</label>
+          <input id="pom" class="mt-1 w-full border rounded-lg p-2" placeholder="Bronx, New York, USA" />
+        </div>
+
+        <!-- residency & grounds -->
+        <div>
+          <label class="block text-sm font-medium">Residency Basis</label>
+          <select id="residency" class="mt-1 w-full border rounded-lg p-2">
+            <option value="Plaintiff has lived in New York State for more than two years immediately before filing.">Plaintiff lived in NY > 2 years</option>
+            <option value="The marriage occurred in New York and either party has lived in New York for one year immediately before filing.">Marriage in NY + ≥1 year residency</option>
+            <option value="The cause of action arose in New York and both parties are residents at filing.">Cause in NY + both residents</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Grounds</label>
+          <select id="grounds" class="mt-1 w-full border rounded-lg p-2">
+            <option value="The relationship between Plaintiff and Defendant has broken down irretrievably for a period of at least six (6) months (DRL §170(7)).">Irretrievable breakdown (No-fault)</option>
+            <option value="Living separate and apart pursuant to a written separation agreement for more than one (1) year.">Separation agreement > 1 year</option>
+          </select>
+        </div>
+
+        <!-- children -->
+        <div>
+          <label class="block text-sm font-medium">Minor Children of the Marriage?</label>
+          <select id="kids" class="mt-1 w-full border rounded-lg p-2">
+            <option value="No minor children of the marriage.">No</option>
+            <option value="There are minor children of the marriage, custody/visitation and support are resolved.">Yes — resolved</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Children Details (names & DOBs) — if any</label>
+          <input id="kidsDetails" class="mt-1 w-full border rounded-lg p-2" placeholder="(If any) Child A 01/02/2015; Child B 03/04/2018" />
+        </div>
+
+        <!-- property / debts -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Property / Debts Division (plain English)</label>
+          <textarea id="property" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Each keeps property in their own name; no joint real estate; bank accounts already divided; no claims to maintenance."></textarea>
+        </div>
+
+        <!-- relief -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Relief Requested (Judgment terms)</label>
+          <textarea id="relief" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Grant of divorce; restoration of Plaintiff’s prior surname (if any); each party to bear own fees; terms of settlement incorporated but not merged."></textarea>
+        </div>
+
+        <!-- notes -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Special Notes</label>
+          <textarea id="notes" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Any special facts you want reflected (e.g., service waiver, default request, etc.)."></textarea>
+        </div>
       </div>
-      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">
-        UNPAID DRAFT
+
+      <div class="mt-6 flex items-center gap-3">
+        <button id="btnPreview" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">Update Preview</button>
+        <button id="btnBuy" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">Buy Now</button>
+        <span class="text-xs text-gray-500">Price is set in Stripe.</span>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Live Preview (watermark removed after payment)</h2>
+      <div class="relative wm rounded-lg border p-4">
+        <pre id="preview" class="whitespace-pre-wrap text-sm leading-6 text-gray-800 select-text"></pre>
+      </div>
+    </section>
+  </main>
 
 <script>
-const PRICE_ID = "price_1SJa9sHcizSl783n2N0nYVkg"; // ✅ your real Price ID
-const SUCCESS_PATH = "/divorce/success.html";
+const PRICE_ID = "price_1SJa9sHcizSl783n2N0nYVkg"; // Uncontested Divorce (your price)
+const PRODUCT_NAME = "NY Uncontested Divorce Pack";
 
-function $(id){ return document.getElementById(id); }
+function v(id){ return (document.getElementById(id)?.value || "").trim(); }
 
-async function saveDraft() {
-  const email = $('buyerEmail').value.trim();
-  const name  = $('buyerName').value.trim();
-  const product = "Uncontested Divorce Packet";
-  const content = $('preview').innerText || 'Draft content';
+function buildPreview(){
+  const county = v('county') || '[County]';
+  const venue = v('venue') || `Supreme Court of the State of New York, County of ${county}`;
+  const plaintiffName = v('plaintiffName') || '[Plaintiff Name]';
+  const defendantName = v('defendantName') || '[Defendant Name]';
+  const plaintiffAddress = v('plaintiffAddress') || '[Plaintiff Address]';
+  const defendantAddress = v('defendantAddress') || '[Defendant Address]';
+  const dom = v('dom') || '[Date of Marriage]';
+  const pom = v('pom') || '[Place of Marriage]';
+  const residency = v('residency') || 'Plaintiff lived in NY > 2 years';
+  const grounds = v('grounds') || 'Irretrievable breakdown';
+  const kids = v('kids') || 'No minor children of the marriage.';
+  const kidsDetails = v('kidsDetails') || '';
+  const property = v('property') || 'Each retains property in own name; no joint real property; bank accounts resolved; no maintenance.';
+  const relief = v('relief') || 'Grant of divorce; restoration of prior surname (if any); each party bears own fees; settlement incorporated but not merged.';
+  const notes = v('notes') || '';
+
+  return `SUPREME COURT OF THE STATE OF NEW YORK
+COUNTY OF ${county.toUpperCase()}
+
+-----------------------------------------X
+${plaintiffName},                                 Index No.: __________
+                              Plaintiff,
+       - against -                                
+${defendantName},                                 VERIFIED COMPLAINT
+                              Defendant.
+-----------------------------------------X
+
+VENUE
+This action is brought in the ${venue}.
+
+PARTIES & RESIDENCY
+1. Plaintiff: ${plaintiffName}, residing at ${plaintiffAddress}.
+2. Defendant: ${defendantName}, residing at ${defendantAddress}.
+3. Residency basis: ${residency}
+
+MARRIAGE
+4. The parties were married on ${dom} in ${pom}.
+
+GROUNDS
+5. ${grounds}
+
+CHILDREN
+6. ${kids}${kidsDetails ? `  Details: ${kidsDetails}.` : ''}
+
+PROPERTY / DEBTS
+7. ${property}
+
+RELIEF REQUESTED
+8. ${relief}
+
+WHEREFORE, Plaintiff demands judgment granting a divorce and such other and further relief as the Court deems just and proper.
+
+Dated: ____________________
+______________________________
+${plaintiffName}
+Plaintiff, Pro Se
+
+-----------------------------------------X
+
+SWORN STATEMENT (Irretrievable Breakdown)
+Plaintiff affirms that the marriage has broken down irretrievably for at least six (6) months (DRL §170(7)).
+
+NOTES
+${notes || '(none)'}
+`;
+}
+
+function setPreview(){ document.getElementById('preview').textContent = buildPreview(); }
+setPreview();
+document.getElementById('btnPreview').addEventListener('click', setPreview);
+
+async function saveDraft(){
+  const email = v('buyerEmail');
+  const name = v('buyerName');
+  const content = buildPreview();
+  const product = PRODUCT_NAME;
+
   const r = await fetch('/.netlify/functions/save-draft', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email, name, product, content })
   });
-  if(!r.ok){ throw new Error('save-draft failed'); }
-  return r.json();
+  if(!r.ok) throw new Error('save-draft failed');
+  return r.json(); // { draftId }
 }
 
-$('buyNow').addEventListener('click', async () => {
-  try {
-    const email = $('buyerEmail').value.trim();
-    if(!email){ alert('Enter your email'); return; }
+document.getElementById('btnBuy').addEventListener('click', async () => {
+  try{
+    const email = v('buyerEmail'), name = v('buyerName');
+    if(!email){ alert('Please enter your email.'); return; }
+    if(!name){ alert('Please enter your full name.'); return; }
+    setPreview(); // refresh preview
+
     const { draftId } = await saveDraft();
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ draftId, email, priceId: PRICE_ID, successPath: SUCCESS_PATH })
+      body: JSON.stringify({
+        draftId,
+        email,
+        priceId: PRICE_ID,
+        successPath: '/divorce/success.html'
+      })
     });
-    if(!r.ok){ alert('Checkout failed'); return; }
+    if(!r.ok){
+      const t = await r.text();
+      console.error('create-checkout failed:', t);
+      alert('Problem starting checkout. Please try again.');
+      return;
+    }
     const { url } = await r.json();
     location.href = url;
-  } catch (e) {
+  }catch(e){
     console.error(e);
-    alert('Problem starting checkout');
+    alert('There was a problem. Please try again.');
   }
 });
 </script>
-</body>
-</html>
+</body></html>
+
