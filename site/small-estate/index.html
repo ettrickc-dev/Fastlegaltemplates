@@ -1,76 +1,240 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Small Estate Administration Packet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NY Small Estate Administration — Fast Legal Templates</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+  body{background:#f8fafc}
+  .wm:after{
+    content:"UNPAID DRAFT";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:56px; font-weight:900; color:rgba(16,185,129,0.08); pointer-events:none;
+    transform:rotate(-12deg);
+  }
+</style>
 </head>
-<body class="bg-gray-50 p-6">
-  <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2">Small Estate Administration Packet</h1>
-  <p class="text-gray-600 mb-4">Streamlined probate alternatives (where allowed).</p>
+<body class="min-h-screen">
+  <header class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="text-sm text-gray-600">&larr; Home</a>
+    <h1 class="text-xl sm:text-2xl font-extrabold text-emerald-700">NY Small Estate Administration (Voluntary Admin)</h1>
+  </header>
 
-  <div class="bg-white p-4 rounded-lg border max-w-xl">
-    <label class="block text-sm font-medium">Your Email</label>
-    <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
-    <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-4" placeholder="Jane Doe">
+  <main class="max-w-6xl mx-auto px-4 pb-16 grid lg:grid-cols-2 gap-6">
+    <!-- LEFT: FORM -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Answer these questions</h2>
 
-    <button id="buyNow" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded w-full">
-      Buy Now
-    </button>
-    <p class="text-xs text-gray-500 mt-2">You will be redirected to Stripe Checkout.</p>
-  </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- delivery -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Email (for delivery)</label>
+          <input id="buyerEmail" class="mt-1 w-full border rounded-lg p-2" placeholder="you@example.com" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Full Name</label>
+          <input id="buyerName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe" />
+        </div>
 
-  <div class="mt-6 bg-white p-4 rounded-lg border">
-    <div class="relative min-h-[160px]">
-      <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
-Draft: Small Estate Packet preview content…
+        <!-- court -->
+        <div>
+          <label class="block text-sm font-medium">County (Surrogate’s Court)</label>
+          <input id="county" class="mt-1 w-full border rounded-lg p-2" placeholder="Westchester" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Estate Value (approx.)</label>
+          <input id="estateValue" class="mt-1 w-full border rounded-lg p-2" placeholder="$40,000" />
+        </div>
+
+        <!-- decedent -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Decedent’s Full Name</label>
+          <input id="decedentName" class="mt-1 w-full border rounded-lg p-2" placeholder="John A. Smith" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Date of Death</label>
+          <input id="dod" type="date" class="mt-1 w-full border rounded-lg p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Place of Death (City/State)</label>
+          <input id="pod" class="mt-1 w-full border rounded-lg p-2" placeholder="White Plains, NY" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Decedent’s Address at Death</label>
+          <input id="decAddress" class="mt-1 w-full border rounded-lg p-2" placeholder="123 Maple St, Yonkers, NY 10701" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Did the decedent leave a Will?</label>
+          <select id="hasWill" class="mt-1 w-full border rounded-lg p-2">
+            <option value="No known Will. Proceeding as voluntary administration of a small estate.">No Will (Voluntary Admin)</option>
+            <option value="A Will exists; petitioner is seeking voluntary administration limited to small assets.">Will exists (limited assets)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Primary Assets (bank, DMV car, etc.)</label>
+          <input id="assets" class="mt-1 w-full border rounded-lg p-2" placeholder="Chase bank acct ending 1234; 2015 Toyota Camry" />
+        </div>
+
+        <!-- petitioner -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Petitioner (Voluntary Administrator)</label>
+          <input id="petitionerName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe (daughter)" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Relationship to Decedent</label>
+          <input id="relationship" class="mt-1 w-full border rounded-lg p-2" placeholder="Daughter / Son / Spouse / Other" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Petitioner Address</label>
+          <input id="petAddress" class="mt-1 w-full border rounded-lg p-2" placeholder="55 Oak Ave, Bronx, NY 10467" />
+        </div>
+
+        <!-- distributees -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Distributees (names, relationship, addresses)</label>
+          <textarea id="distributees" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe (spouse) 55 Oak Ave Bronx NY; Adam Smith (son) 777 Pine Rd Mount Vernon NY"></textarea>
+        </div>
+
+        <!-- notices -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Known Creditors / Institutions to Notify</label>
+          <textarea id="creditors" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Chase Bank; DMV; Social Security; Employer HR"></textarea>
+        </div>
+
+        <!-- notes -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Special Notes</label>
+          <textarea id="notes" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Any special facts (e.g., funeral expenses paid by petitioner, small safe deposit box, etc.)."></textarea>
+        </div>
       </div>
-      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">
-        UNPAID DRAFT
+
+      <div class="mt-6 flex items-center gap-3">
+        <button id="btnPreview" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">Update Preview</button>
+        <button id="btnBuy" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">Buy Now</button>
+        <span class="text-xs text-gray-500">Price is set in Stripe.</span>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Live Preview (watermark removed after payment)</h2>
+      <div class="relative wm rounded-lg border p-4">
+        <pre id="preview" class="whitespace-pre-wrap text-sm leading-6 text-gray-800 select-text"></pre>
+      </div>
+    </section>
+  </main>
 
 <script>
-const PRICE_ID = "price_1SJYH1HcizSl783n5vRzTTIb"; // ✅ your real Price ID
-const SUCCESS_PATH = "/small-estate/success.html";
+const PRICE_ID = "price_1SJYH1HcizSl783n5vRzTTIb"; // Small Estate (your price)
+const PRODUCT_NAME = "NY Small Estate Administration Pack";
 
-function $(id){ return document.getElementById(id); }
+function v(id){ return (document.getElementById(id)?.value || "").trim(); }
 
-async function saveDraft() {
-  const email = $('buyerEmail').value.trim();
-  const name  = $('buyerName').value.trim();
-  const product = "Small Estate Administration Packet";
-  const content = $('preview').innerText || 'Draft content';
+function buildPreview(){
+  const county = v('county') || '[County]';
+  const estateValue = v('estateValue') || '[Value <= $50,000 (generally)]';
+  const decedentName = v('decedentName') || '[Decedent Name]';
+  const dod = v('dod') || '[Date of Death]';
+  const pod = v('pod') || '[Place of Death]';
+  const decAddress = v('decAddress') || '[Decedent Address]';
+  const hasWill = v('hasWill') || 'No known Will.';
+  const assets = v('assets') || '[Bank account / motor vehicle / small assets]';
+  const petitionerName = v('petitionerName') || '[Petitioner Name]';
+  const relationship = v('relationship') || '[Relationship]';
+  const petAddress = v('petAddress') || '[Petitioner Address]';
+  const distributees = v('distributees') || '[List of distributees with addresses]';
+  const creditors = v('creditors') || '[Institutions/creditors to be notified]';
+  const notes = v('notes') || '';
+
+  return `SURROGATE'S COURT OF THE STATE OF NEW YORK
+COUNTY OF ${county.toUpperCase()}
+
+--------------------------------------------------X
+In the Matter of the Voluntary Administration              File No.: __________
+of the Estate of                                           AFFIDAVIT IN RELATION
+${decedentName.toUpperCase()}, Deceased.                   TO SETTLEMENT OF SMALL ESTATE
+--------------------------------------------------X
+
+1) DECEDENT
+- Name: ${decedentName}
+- DOD: ${dod}
+- Place of Death: ${pod}
+- Last Address: ${decAddress}
+- Will: ${hasWill}
+
+2) SMALL ESTATE
+- Approximate estate value: ${estateValue}
+- Assets to collect: ${assets}
+- Proceeding under SCPA Article 13 (small estate/voluntary administration).
+
+3) PETITIONER (VOLUNTARY ADMINISTRATOR)
+- Name: ${petitionerName}
+- Relationship: ${relationship}
+- Address: ${petAddress}
+
+4) DISTRIBUTEES (KIN)
+${distributees}
+
+5) NOTICES / CREDITORS / INSTITUTIONS
+${creditors}
+
+6) RELIEF REQUESTED
+Issuance of a Certificate of Voluntary Administration to ${petitionerName} to collect the above assets, pay lawful claims and expenses, and distribute remaining funds to lawful distributees.
+
+NOTES
+${notes || '(none)'}
+`;
+}
+
+function setPreview(){ document.getElementById('preview').textContent = buildPreview(); }
+setPreview();
+document.getElementById('btnPreview').addEventListener('click', setPreview);
+
+async function saveDraft(){
+  const email = v('buyerEmail');
+  const name = v('buyerName');
+  const content = buildPreview();
+  const product = PRODUCT_NAME;
+
   const r = await fetch('/.netlify/functions/save-draft', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email, name, product, content })
   });
-  if(!r.ok){ throw new Error('save-draft failed'); }
-  return r.json();
+  if(!r.ok) throw new Error('save-draft failed');
+  return r.json(); // { draftId }
 }
 
-$('buyNow').addEventListener('click', async () => {
-  try {
-    const email = $('buyerEmail').value.trim();
-    if(!email){ alert('Enter your email'); return; }
+document.getElementById('btnBuy').addEventListener('click', async () => {
+  try{
+    const email = v('buyerEmail'), name = v('buyerName');
+    if(!email){ alert('Please enter your email.'); return; }
+    if(!name){ alert('Please enter your full name.'); return; }
+    setPreview(); // refresh preview
+
     const { draftId } = await saveDraft();
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ draftId, email, priceId: PRICE_ID, successPath: SUCCESS_PATH })
+      body: JSON.stringify({
+        draftId,
+        email,
+        priceId: PRICE_ID,
+        successPath: '/small-estate/success.html'
+      })
     });
-    if(!r.ok){ alert('Checkout failed'); return; }
+    if(!r.ok){
+      const t = await r.text();
+      console.error('create-checkout failed:', t);
+      alert('Problem starting checkout. Please try again.');
+      return;
+    }
     const { url } = await r.json();
     location.href = url;
-  } catch (e) {
+  }catch(e){
     console.error(e);
-    alert('Problem starting checkout');
+    alert('There was a problem. Please try again.');
   }
 });
 </script>
-</body>
-</html>
+</body></html>
 
