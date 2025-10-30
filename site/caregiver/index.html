@@ -1,62 +1,238 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Caregiver Services Agreement</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Caregiver Services Agreement — Fast Legal Templates</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body{background:#f8fafc}
+  .wm:after{
+    content:"UNPAID DRAFT";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:56px; font-weight:900; color:rgba(16,185,129,0.08); pointer-events:none;
+    transform:rotate(-12deg);
+  }
+</style>
 </head>
-<body class="bg-gray-50 p-6">
-  <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2">Caregiver Services Agreement</h1>
-  <p class="text-gray-600 mb-4">Employee (W-2) or Independent Contractor (1099).</p>
+<body class="min-h-screen">
+  <header class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="text-sm text-gray-600">&larr; Home</a>
+    <h1 class="text-xl sm:text-2xl font-extrabold text-emerald-700">Caregiver Services Agreement</h1>
+  </header>
 
-  <div class="bg-white p-4 rounded-lg border max-w-xl">
-    <label class="block text-sm font-medium">Your Email</label>
-    <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
-    <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-4" placeholder="Jane Doe">
+  <main class="max-w-6xl mx-auto px-4 pb-16 grid lg:grid-cols-2 gap-6">
+    <!-- LEFT: FORM -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Answer these questions</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Delivery -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Email (for delivery)</label>
+          <input id="buyerEmail" class="mt-1 w-full border rounded-lg p-2" placeholder="you@example.com" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Full Name</label>
+          <input id="buyerName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe" />
+        </div>
 
-    <button id="buyNow" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded w-full">
-      Buy Now
-    </button>
-    <p class="text-xs text-gray-500 mt-2">You will be redirected to Stripe Checkout.</p>
-  </div>
+        <!-- Parties -->
+        <div>
+          <label class="block text-sm font-medium">Client/Family Name</label>
+          <input id="clientName" class="mt-1 w-full border rounded-lg p-2" placeholder="Client/Family (hiring party)" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Caregiver Name</label>
+          <input id="caregiverName" class="mt-1 w-full border rounded-lg p-2" placeholder="Caregiver (worker)" />
+        </div>
 
-  <div class="mt-6 bg-white p-4 rounded-lg border">
-    <div class="relative min-h-[160px]">
-      <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
-Draft: Caregiver Agreement preview content…
+        <!-- Relationship -->
+        <div>
+          <label class="block text-sm font-medium">Relationship Type</label>
+          <select id="relationshipType" class="mt-1 w-full border rounded-lg p-2">
+            <option>Employee (W-2)</option>
+            <option>Independent Contractor (1099)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Start Date</label>
+          <input id="startDate" type="date" class="mt-1 w-full border rounded-lg p-2" />
+        </div>
+
+        <!-- Pay -->
+        <div>
+          <label class="block text-sm font-medium">Pay Rate</label>
+          <input id="payRate" class="mt-1 w-full border rounded-lg p-2" placeholder="$25/hour or $900/week" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Pay Schedule</label>
+          <select id="paySchedule" class="mt-1 w-full border rounded-lg p-2">
+            <option>Weekly</option>
+            <option>Biweekly</option>
+            <option>Monthly</option>
+            <option>Per Shift</option>
+          </select>
+        </div>
+
+        <!-- Hours / Duties -->
+        <div>
+          <label class="block text-sm font-medium">Typical Hours</label>
+          <input id="hours" class="mt-1 w-full border rounded-lg p-2" placeholder="Mon–Fri 9am–5pm" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Work Location</label>
+          <input id="location" class="mt-1 w-full border rounded-lg p-2" placeholder="123 Main St, City, State" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Duties (comma or line-separated)</label>
+          <textarea id="duties" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Companionship, meal prep, bathing assistance, meds reminders, light housekeeping"></textarea>
+        </div>
+
+        <!-- Time off / termination -->
+        <div>
+          <label class="block text-sm font-medium">Paid Time Off</label>
+          <input id="pto" class="mt-1 w-full border rounded-lg p-2" placeholder="5 days PTO per year; unpaid sick days permitted" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Termination Notice</label>
+          <input id="termination" class="mt-1 w-full border rounded-lg p-2" placeholder="7 days notice by either party" />
+        </div>
+
+        <!-- Legal bits -->
+        <div>
+          <label class="block text-sm font-medium">Confidentiality (Yes/No)</label>
+          <select id="confidentiality" class="mt-1 w-full border rounded-lg p-2">
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Governing Law (State)</label>
+          <input id="stateLaw" class="mt-1 w-full border rounded-lg p-2" placeholder="New York" />
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Special Notes</label>
+          <textarea id="notes" rows="2" class="mt-1 w-full border rounded-lg p-2" placeholder="Live-in arrangement? Mileage reimbursement? Training?"></textarea>
+        </div>
       </div>
-      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">
-        UNPAID DRAFT
+
+      <div class="mt-6 flex items-center gap-3">
+        <button id="btnPreview" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">Update Preview</button>
+        <button id="btnBuy" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">Buy Now</button>
+        <span class="text-xs text-gray-500">Price is set in Stripe.</span>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Live Preview (watermark removed after payment)</h2>
+      <div class="relative wm rounded-lg border p-4">
+        <pre id="preview" class="whitespace-pre-wrap text-sm leading-6 text-gray-800 select-text"></pre>
+      </div>
+    </section>
+  </main>
 
 <script>
-const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // ✅ your real Price ID
-const SUCCESS_PATH = "/caregiver/success.html";
+const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // Caregiver price you provided
+const PRODUCT_NAME = "Caregiver Services Agreement";
 
-function $(id){ return document.getElementById(id); }
+function v(id){ return (document.getElementById(id)?.value || "").trim(); }
 
-async function saveDraft() {
-  const email = $('buyerEmail').value.trim();
-  const name  = $('buyerName').value.trim();
-  const product = "Caregiver Services Agreement";
-  const content = $('preview').innerText || 'Draft content';
+function listFromText(t){
+  return t.split(/\n|,/).map(s=>s.trim()).filter(Boolean).map(s=>`• ${s}`).join('\n');
+}
+
+function buildPreview(){
+  const buyerEmail = v('buyerEmail') || '[you@example.com]';
+  const buyerName = v('buyerName') || '[Your Name]';
+  const clientName = v('clientName') || '[Client/Family]';
+  const caregiverName = v('caregiverName') || '[Caregiver]';
+  const relationshipType = v('relationshipType') || 'Employee (W-2)';
+  const startDate = v('startDate') || '[Start Date]';
+  const payRate = v('payRate') || 'TBD';
+  const paySchedule = v('paySchedule') || 'Weekly';
+  const hours = v('hours') || 'TBD';
+  const location = v('location') || 'Client residence';
+  const duties = listFromText(v('duties') || 'Companionship, meal prep, bathing assistance, meds reminders, light housekeeping');
+  const pto = v('pto') || 'As required by law or agreed in writing';
+  const termination = v('termination') || '7 days notice by either party';
+  const conf = v('confidentiality') || 'Yes';
+  const stateLaw = v('stateLaw') || 'New York';
+  const notes = v('notes') || '';
+
+  return `CAREGIVER SERVICES AGREEMENT
+
+This Agreement is between ${clientName} ("Client") and ${caregiverName} ("Caregiver"), effective ${startDate}.
+
+1) RELATIONSHIP
+The parties intend a ${relationshipType}. Nothing here creates a partnership or other relationship. ${relationshipType.includes('Employee') ? 'Client will handle required payroll, taxes, and withholdings.' : 'Caregiver is responsible for all taxes and no benefits are provided.'}
+
+2) SERVICES & SCHEDULE
+Location: ${location}
+Typical Hours: ${hours}
+Duties:
+${duties}
+
+3) COMPENSATION
+Rate: ${payRate}
+Pay Schedule: ${paySchedule}
+Overtime and any differentials will be paid as required by applicable law (if Employee).
+
+4) TIME OFF / SICK LEAVE
+${pto}
+
+5) CONFIDENTIALITY
+${conf === 'Yes' ? 'Caregiver agrees to keep Client’s personal, medical, and financial information confidential.' : 'No special confidentiality obligations in addition to applicable law.'}
+
+6) SAFETY & PROFESSIONAL CONDUCT
+Caregiver will perform services diligently, follow reasonable household rules, and promptly report issues affecting the Client’s health or safety.
+
+7) TERMINATION
+${termination}
+
+8) GOVERNING LAW
+This Agreement is governed by the laws of ${stateLaw}.
+
+9) ENTIRE AGREEMENT
+This is the entire agreement and may be amended only in a signed writing.
+
+SPECIAL NOTES
+${notes || '(none)'}
+
+SIGNATURES
+Client: ____________________________   Date: ____________
+Caregiver: _________________________  Date: ____________
+
+Prepared for: ${buyerName} (${buyerEmail})
+(Your download includes: Agreement (DOCX), Memorandum, Exhibits Index, and a simple Procedures/Checklist.)`;
+}
+
+function setPreview(){ document.getElementById('preview').textContent = buildPreview(); }
+setPreview();
+document.getElementById('btnPreview').addEventListener('click', setPreview);
+
+// Save draft to server
+async function saveDraft(){
+  const email = v('buyerEmail');
+  const name = v('buyerName');
+  const content = buildPreview();
+  const product = PRODUCT_NAME;
+
   const r = await fetch('/.netlify/functions/save-draft', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email, name, product, content })
   });
-  if(!r.ok){ throw new Error('save-draft failed'); }
+  if(!r.ok) throw new Error('save-draft failed');
   return r.json(); // { draftId }
 }
 
-$('buyNow').addEventListener('click', async () => {
-  try {
-    const email = $('buyerEmail').value.trim();
-    if(!email){ alert('Enter your email'); return; }
+// Start checkout
+document.getElementById('btnBuy').addEventListener('click', async () => {
+  try{
+    const email = v('buyerEmail'), name = v('buyerName');
+    if(!email){ alert('Please enter your email.'); return; }
+    if(!name){ alert('Please enter your full name.'); return; }
+    setPreview();
+
     const { draftId } = await saveDraft();
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -64,18 +240,22 @@ $('buyNow').addEventListener('click', async () => {
         draftId,
         email,
         priceId: PRICE_ID,
-        successPath: SUCCESS_PATH
+        successPath: '/caregiver/success.html'
       })
     });
-    if(!r.ok){ alert('Checkout failed'); return; }
+    if(!r.ok){
+      const t = await r.text();
+      console.error('create-checkout failed:', t);
+      alert('Problem starting checkout. Please try again.');
+      return;
+    }
     const { url } = await r.json();
-    location.href = url; // go to Stripe
-  } catch (e) {
+    location.href = url;
+  }catch(e){
     console.error(e);
-    alert('Problem starting checkout');
+    alert('There was a problem. Please try again.');
   }
 });
 </script>
-</body>
-</html>
+</body></html>
 
