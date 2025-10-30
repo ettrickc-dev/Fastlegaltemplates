@@ -1,76 +1,234 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Nursing License Appeal Pack</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nursing License Appeal Pack — Fast Legal Templates</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+  body{background:#f8fafc}
+  .wm:after{
+    content:"UNPAID DRAFT";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:56px; font-weight:900; color:rgba(16,185,129,0.08); pointer-events:none;
+    transform:rotate(-12deg);
+  }
+</style>
 </head>
-<body class="bg-gray-50 p-6">
-  <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-  <h1 class="text-3xl font-extrabold mt-2">Nursing License Appeal Pack</h1>
-  <p class="text-gray-600 mb-4">Admin hearing-ready packet.</p>
+<body class="min-h-screen">
+  <header class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="text-sm text-gray-600">&larr; Home</a>
+    <h1 class="text-xl sm:text-2xl font-extrabold text-emerald-700">Nursing License Appeal Pack (RN/LPN)</h1>
+  </header>
 
-  <div class="bg-white p-4 rounded-lg border max-w-xl">
-    <label class="block text-sm font-medium">Your Email</label>
-    <input id="buyerEmail" class="border rounded p-2 w-full mb-3" placeholder="you@example.com">
-    <label class="block text-sm font-medium">Your Name</label>
-    <input id="buyerName" class="border rounded p-2 w-full mb-4" placeholder="Jane Doe">
+  <main class="max-w-6xl mx-auto px-4 pb-16 grid lg:grid-cols-2 gap-6">
+    <!-- LEFT: FORM -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Answer these questions</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Delivery -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Email (for delivery)</label>
+          <input id="buyerEmail" class="mt-1 w-full border rounded-lg p-2" placeholder="you@example.com" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Full Name</label>
+          <input id="buyerName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe" />
+        </div>
 
-    <button id="buyNow" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded w-full">
-      Buy Now
-    </button>
-    <p class="text-xs text-gray-500 mt-2">You will be redirected to Stripe Checkout.</p>
-  </div>
+        <!-- License / Board -->
+        <div>
+          <label class="block text-sm font-medium">License Type</label>
+          <select id="licenseType" class="mt-1 w-full border rounded-lg p-2">
+            <option>Registered Nurse (RN)</option>
+            <option>Licensed Practical Nurse (LPN)</option>
+            <option>Advanced Practice (NP/CRNA/CNS)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">State Board (BON)</label>
+          <input id="boardState" class="mt-1 w-full border rounded-lg p-2" placeholder="New York State Board of Nursing" />
+        </div>
 
-  <div class="mt-6 bg-white p-4 rounded-lg border">
-    <div class="relative min-h-[160px]">
-      <div id="preview" class="text-sm text-gray-800 whitespace-pre-wrap">
-Draft: Nursing Appeal Pack preview content…
+        <!-- Case posture -->
+        <div>
+          <label class="block text-sm font-medium">What are you appealing?</label>
+          <select id="appealType" class="mt-1 w-full border rounded-lg p-2">
+            <option>Denial of License Application</option>
+            <option>Discipline (Probation/Suspension)</option>
+            <option>License Revocation</option>
+            <option>Exam/NCLEX Issue</option>
+            <option>Other Adverse Action</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Decision Date (if any)</label>
+          <input id="decisionDate" type="date" class="mt-1 w-full border rounded-lg p-2" />
+        </div>
+
+        <!-- Facts -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Brief Timeline of Events</label>
+          <textarea id="timeline" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Dates, incidents, any prior communications with the Board"></textarea>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Board’s Reason(s) for Action</label>
+          <textarea id="boardReasons" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="What did the Board say you did wrong? Quote their letter if possible."></textarea>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Your Rebuttal / Explanation</label>
+          <textarea id="rebuttal" rows="4" class="mt-1 w-full border rounded-lg p-2" placeholder="Facts, context, and why the Board’s view is incomplete or incorrect."></textarea>
+        </div>
+
+        <!-- Mitigation -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Mitigating Factors / Rehabilitation</label>
+          <textarea id="mitigation" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="CE courses, counseling, monitoring, clean tests, letters of recommendation, performance reviews, volunteer work"></textarea>
+        </div>
+
+        <!-- Work history -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Nursing Employment History (recent first)</label>
+          <textarea id="employment" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Employer, role, dates, supervisor if helpful"></textarea>
+        </div>
+
+        <!-- Relief -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">What outcome do you want?</label>
+          <textarea id="relief" rows="2" class="mt-1 w-full border rounded-lg p-2" placeholder="Reverse denial; reduce discipline; issue probation with terms; permit re-application; retake NCLEX; etc."></textarea>
+        </div>
+
+        <!-- Notes -->
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium">Special Notes</label>
+          <textarea id="notes" rows="2" class="mt-1 w-full border rounded-lg p-2" placeholder="Anything else important for the Board to know"></textarea>
+        </div>
       </div>
-      <div class="absolute inset-0 pointer-events-none flex items-center justify-center text-6xl font-black text-emerald-500/10">
-        UNPAID DRAFT
+
+      <div class="mt-6 flex items-center gap-3">
+        <button id="btnPreview" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">Update Preview</button>
+        <button id="btnBuy" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">Buy Now</button>
+        <span class="text-xs text-gray-500">Price is set in Stripe.</span>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
+      <h2 class="text-lg font-bold mb-3">Live Preview (watermark removed after payment)</h2>
+      <div class="relative wm rounded-lg border p-4">
+        <pre id="preview" class="whitespace-pre-wrap text-sm leading-6 text-gray-800 select-text"></pre>
+      </div>
+    </section>
+  </main>
 
 <script>
-const PRICE_ID = "price_1SJZnEHcizSl783nDDKUe2cU"; // ✅ your real Price ID
-const SUCCESS_PATH = "/nursing-appeal/success.html";
+const PRICE_ID = "price_1SJZnEHcizSl783nDDKUe2cU"; // Nursing Appeal (your price)
+const PRODUCT_NAME = "Nursing License Appeal Pack";
 
-function $(id){ return document.getElementById(id); }
+function v(id){ return (document.getElementById(id)?.value || "").trim(); }
 
-async function saveDraft() {
-  const email = $('buyerEmail').value.trim();
-  const name  = $('buyerName').value.trim();
-  const product = "Nursing License Appeal Pack";
-  const content = $('preview').innerText || 'Draft content';
+function buildPreview(){
+  const name = v('buyerName') || '[Your Name]';
+  const email = v('buyerEmail') || '[you@example.com]';
+  const licenseType = v('licenseType') || 'RN/LPN';
+  const boardState = v('boardState') || '[State Board of Nursing]';
+  const appealType = v('appealType') || 'Appeal Type';
+  const decisionDate = v('decisionDate') || '[Decision Date]';
+  const timeline = v('timeline') || '[Timeline of events]';
+  const boardReasons = v('boardReasons') || '[Board reasons quoted/summarized]';
+  const rebuttal = v('rebuttal') || '[Your rebuttal / explanation]';
+  const mitigation = v('mitigation') || '[Mitigating factors, rehabilitation]';
+  const employment = v('employment') || '[Employment history]';
+  const relief = v('relief') || '[Requested outcome]';
+  const notes = v('notes') || '';
+
+  return `BEFORE THE ${boardState.toUpperCase()}
+IN THE MATTER OF THE ${licenseType.toUpperCase()} LICENSE OF
+${name.toUpperCase()}
+
+SUBJECT: ${appealType.toUpperCase()}
+
+I. INTRODUCTION
+This is a timely request for review/appeal of the ${appealType.toLowerCase()} issued ${decisionDate}. Appellant: ${name}, email: ${email}.
+
+II. PROCEDURAL HISTORY & TIMELINE
+${timeline}
+
+III. BOARD’S STATED REASONS
+${boardReasons}
+
+IV. FACTUAL CLARIFICATIONS & REBUTTAL
+${rebuttal}
+
+V. MITIGATING FACTORS / REHABILITATION
+${mitigation}
+
+VI. EMPLOYMENT HISTORY (RECENT FIRST)
+${employment}
+
+VII. RELIEF REQUESTED
+${relief}
+
+VIII. CONCLUSION
+Appellant respectfully asks the Board to reconsider, apply proportionate discipline (if any), and issue relief described above in light of the factual context and rehabilitation.
+
+NOTES
+${notes || '(none)'}
+
+(Your download includes: Appeal Letter, Personal Statement, Exhibits Index, and Procedures/Checklist tailored to your inputs.)
+`;
+}
+
+function setPreview(){ document.getElementById('preview').textContent = buildPreview(); }
+setPreview();
+document.getElementById('btnPreview').addEventListener('click', setPreview);
+
+// Save draft to server
+async function saveDraft(){
+  const email = v('buyerEmail');
+  const name = v('buyerName');
+  const content = buildPreview();
+  const product = PRODUCT_NAME;
+
   const r = await fetch('/.netlify/functions/save-draft', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email, name, product, content })
   });
-  if(!r.ok){ throw new Error('save-draft failed'); }
-  return r.json();
+  if(!r.ok) throw new Error('save-draft failed');
+  return r.json(); // { draftId }
 }
 
-$('buyNow').addEventListener('click', async () => {
-  try {
-    const email = $('buyerEmail').value.trim();
-    if(!email){ alert('Enter your email'); return; }
+// Start checkout
+document.getElementById('btnBuy').addEventListener('click', async () => {
+  try{
+    const email = v('buyerEmail'), name = v('buyerName');
+    if(!email){ alert('Please enter your email.'); return; }
+    if(!name){ alert('Please enter your full name.'); return; }
+    setPreview();
+
     const { draftId } = await saveDraft();
     const r = await fetch('/.netlify/functions/create-checkout', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ draftId, email, priceId: PRICE_ID, successPath: SUCCESS_PATH })
+      body: JSON.stringify({
+        draftId,
+        email,
+        priceId: PRICE_ID,
+        successPath: '/nursing-appeal/success.html'
+      })
     });
-    if(!r.ok){ alert('Checkout failed'); return; }
+    if(!r.ok){
+      const t = await r.text();
+      console.error('create-checkout failed:', t);
+      alert('Problem starting checkout. Please try again.');
+      return;
+    }
     const { url } = await r.json();
     location.href = url;
-  } catch (e) {
+  }catch(e){
     console.error(e);
-    alert('Problem starting checkout');
+    alert('There was a problem. Please try again.');
   }
 });
 </script>
-</body>
-</html>
+</body></html>
 
