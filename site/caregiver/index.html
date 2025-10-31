@@ -1,573 +1,677 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Caregiver Services Agreement — Fast Legal Templates</title>
+<meta name="description" content="Generate a court-ready Caregiver Services Agreement with clear scope, compensation, HIPAA, live-in rules, and Medicaid look-back language. Live preview. Secure Stripe checkout."/>
+<link rel="canonical" href="https://fastlegaltemplates.com/caregiver"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Tailwind & libs -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<!-- Stripe Buy Button -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800&display=swap');
-  :root{--primary:#059669;--accent:#f59e0b;--ink:#111827;--bg:#f3f4f6}
-  html,body{background:#f3f4f6;font-family:'Inter',system-ui,Arial,sans-serif}
-  .preview-box{min-height:520px;white-space:pre-wrap;tab-size:4;line-height:1.55}
-  .watermark{color:rgba(5,150,105,.10);font-weight:800;font-size:3rem;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-15deg);pointer-events:none}
-  .unlocked .watermark{display:none!important}
-  .step-dot{width:.75rem;height:.75rem;border-radius:9999px;background:#e5e7eb}
-  .step-dot.active{background:var(--primary)}
-  .qhelp{background:#ecfeff;border:1px solid #bae6fd;color:#0369a1}
+  :root{
+    --ink:#111827;
+    --muted:#6b7280;
+    --emerald:#059669;
+    --line:#e5e7eb;
+  }
+  body{font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;background:#f9fafb;color:var(--ink)}
+  .draft-watermark{
+    pointer-events:none;user-select:none;
+    font-weight:900; letter-spacing:.04em;
+    color:rgba(16,185,129,.10);
+    font-size:clamp(28px,8vw,90px); /* toned down to avoid overlaying form */
+  }
+  .tip { font-weight:700; color:#065f46; margin-left:.35rem; cursor:help; }
+  .no-copy{
+    -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+  }
+  .locked-badge{
+    position:absolute;top:.5rem;right:.5rem;
+    background:rgba(6,95,70,.10);color:#065f46;
+    border:1px dashed #10b981;border-radius:.5rem;
+    font-size:.75rem;padding:.2rem .45rem;font-weight:700;
+  }
+  .help-sub{font-size:.8rem;color:#4b5563}
+  /* Prevent accidental text selection globally on buttons/labels only */
+  button,label { user-select:none; }
 </style>
 </head>
-<body class="p-4 md:p-8 text-gray-900">
+<body class="text-gray-900">
+  <header class="max-w-6xl mx-auto p-6 flex items-center justify-between">
+    <div class="text-sm text-gray-600">Fast Legal Templates</div>
+    <h1 class="text-2xl font-extrabold text-emerald-700">Caregiver Services Agreement</h1>
+    <div class="text-xs text-gray-500">Secure Checkout</div>
+  </header>
 
-<header class="max-w-7xl mx-auto flex items-center justify-between gap-4 mb-4">
-  <a href="/" class="text-sm text-gray-600 hover:text-gray-800">&larr; Home</a>
-  <h1 class="text-2xl md:text-3xl font-extrabold text-emerald-700">Caregiver Services Agreement</h1>
-  <div class="text-xs text-gray-500">Draft updates live</div>
-</header>
+  <main class="max-w-6xl mx-auto p-6 grid lg:grid-cols-2 gap-6">
+    <!-- LEFT: FORM -->
+    <section class="bg-white border rounded-xl shadow p-5">
+      <h2 class="text-xl font-bold mb-3">Step 1 — About You</h2>
 
-<main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-  <!-- LEFT: FORM -->
-  <section class="lg:col-span-2 bg-white border rounded-xl shadow p-5">
-    <!-- Progress -->
-    <div class="flex items-center gap-2 mb-4">
-      <div id="stepDots" class="flex items-center gap-2"></div>
-      <div class="ml-auto text-sm text-gray-500"><span id="stepLabel">Step 1</span> of <span id="stepTotal">7</span></div>
-    </div>
+      <label class="block text-sm font-medium mb-1">Your Email
+        <span class="tip" title="Used on notices/receipt and (post-purchase) delivery. Provide an address you can access.">❓</span>
+      </label>
+      <input id="buyerEmail" class="border rounded w-full p-2 mb-3" placeholder="you@example.com"/>
 
-    <div id="formMount"></div>
+      <label class="block text-sm font-medium mb-1">Your Name
+        <span class="tip" title="Shows as purchaser/contact in file naming and for support lookups.">❓</span>
+      </label>
+      <input id="buyerName" class="border rounded w-full p-2 mb-4" placeholder="Your full name"/>
 
-    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <button id="btnBack" class="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg py-2 px-3 hidden">Back</button>
-      <button id="btnNext" class="sm:col-span-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg py-2 px-3">Continue</button>
-    </div>
+      <h2 class="text-xl font-bold mb-3">Step 2 — Parties & Basics</h2>
 
-    <div id="checkoutBlock" class="hidden mt-6 pt-5 border-t">
-      <h3 class="text-lg font-bold mb-2">Step 7 — Checkout</h3>
-      <p class="text-sm text-gray-600 mb-3">Your personalized agreement is ready. After payment you'll receive the downloadable file and a backup via email.</p>
-      <button id="btnBuy" class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg py-2 px-4">Buy Now</button>
-      <p class="text-xs text-gray-500 mt-2">Secure Stripe Checkout will open.</p>
-    </div>
-  </section>
+      <label class="block text-sm font-medium mb-1">Client (person receiving care)
+        <span class="tip" title="Prints into the agreement; use the legal name to avoid identity disputes.">❓</span>
+      </label>
+      <input id="clientName" class="border rounded w-full p-2 mb-3" placeholder="Client Full Name"/>
 
-  <!-- RIGHT: PREVIEW -->
-  <aside class="bg-white border rounded-xl shadow p-5 relative">
-    <h2 class="text-lg font-bold mb-3">Live Preview</h2>
-    <div class="relative">
-      <div class="watermark">UNPAID DRAFT</div>
-      <pre id="preview" class="preview-box text-sm"></pre>
-    </div>
-  </aside>
-</main>
+      <label class="block text-sm font-medium mb-1">Caregiver
+        <span class="tip" title="Identifies who owes duties. If using an agency, list the assigned caregiver if known.">❓</span>
+      </label>
+      <input id="caregiverName" class="border rounded w-full p-2 mb-3" placeholder="Caregiver Full Name"/>
+
+      <label class="block text-sm font-medium mb-1">Arrangement Type
+        <span class="tip" title="Controls employment status, taxes, and wage rules; misclassification can trigger penalties.">❓</span>
+      </label>
+      <select id="arrangementType" class="border rounded w-full p-2 mb-3">
+        <option value="W-2 Employee">W-2 Employee</option>
+        <option value="1099 Independent Contractor">1099 Independent Contractor</option>
+      </select>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Start Date
+            <span class="tip" title="Effective date for obligations and wage calculations. Changes usually need a written amendment.">❓</span>
+          </label>
+          <input type="date" id="startDate" class="border rounded w-full p-2 mb-3"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Care Location (city/state)
+            <span class="tip" title="Determines governing wage/privacy rules—use the primary service location.">❓</span>
+          </label>
+          <input id="careLocation" class="border rounded w-full p-2 mb-3" placeholder="e.g., Scarsdale, NY"/>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Hourly Rate (or flat)
+            <span class="tip" title="Compensation basis; may trigger minimum wage and overtime under applicable law.">❓</span>
+          </label>
+          <input id="payRate" class="border rounded w-full p-2 mb-3" placeholder="$28/hour or $X flat"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Pay Schedule
+            <span class="tip" title="Payroll frequency; compliance required by wage-payment statutes.">❓</span>
+          </label>
+          <input id="paySchedule" class="border rounded w-full p-2 mb-3" placeholder="weekly / biweekly / monthly"/>
+        </div>
+      </div>
+
+      <label class="block text-sm font-medium mb-1">Typical Hours / Days
+        <span class="tip" title="Sets expectations; deviations affect overtime and termination rights.">❓</span>
+      </label>
+      <textarea id="hoursSchedule" class="border rounded w-full p-2 mb-4" rows="2" placeholder="e.g., Mon–Fri, 9am–5pm; occasional weekends"></textarea>
+
+      <!-- Services -->
+      <h2 class="text-xl font-bold mb-3">Step 3 — Service Categories & Details</h2>
+      <p class="text-sm text-gray-600 mb-3">Check everything the caregiver will do, then add specifics.</p>
+
+      <div class="space-y-3">
+        <label class="flex items-start gap-2">
+          <input type="checkbox" id="svcPersonal" class="mt-1"/>
+          <span><strong>Personal Care</strong> (bathing, grooming, dressing, toileting, mobility assistance)
+            <span class="tip" title="Hands-on care—state limits (transfer belts, two-person assist) to reduce injury/liability.">❓</span>
+          </span>
+        </label>
+        <textarea id="svcPersonalDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe limits or specifics (e.g., transfer belt, bathing schedule)"></textarea>
+
+        <label class="flex items-start gap-2 mt-3">
+          <input type="checkbox" id="svcMedical" class="mt-1"/>
+          <span><strong>Medical/Health Support</strong> (medication reminders/administration, appointments, vitals)
+            <span class="tip" title="Do not assign tasks beyond licensure; document scope (e.g., ‘reminders only, no injections’).">❓</span>
+          </span>
+        </label>
+        <textarea id="svcMedicalDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., reminders only (no injections); record BP daily; accompany to cardiology visits"></textarea>
+
+        <label class="flex items-start gap-2 mt-3">
+          <input type="checkbox" id="svcHousehold" class="mt-1"/>
+          <span><strong>Household Tasks</strong> (light housekeeping, laundry, dishes, meal prep, errands)
+            <span class="tip" title="Be specific to avoid scope creep and wage/meal break disputes.">❓</span>
+          </span>
+        </label>
+        <textarea id="svcHouseholdDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., vacuum weekly; laundry 1x/week; low-salt meals; groceries"/>
+
+        <label class="flex items-start gap-2 mt-1">
+          <input type="checkbox" id="svcCompanionship" class="mt-1"/>
+          <span><strong>Companionship</strong> (social interaction, reading, hobbies, transportation)
+            <span class="tip" title="Clarifies non-clinical support; prevents unintentional medical duties.">❓</span>
+          </span>
+        </label>
+        <textarea id="svcCompanionshipDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., daily walk 20 min; read newspaper; senior center Fridays"></textarea>
+
+        <label class="flex items-start gap-2">
+          <input type="checkbox" id="svcOther" class="mt-1"/>
+          <span><strong>Other services</strong> (add anything else)
+            <span class="tip" title="Unlisted duties may be excluded in a dispute—include all material expectations.">❓</span>
+          </span>
+        </label>
+        <textarea id="svcOtherDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe any additional duties not listed above"></textarea>
+      </div>
+
+      <!-- Reimbursement -->
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 4 — Reimbursement Policy</h2>
+      <label class="block text-sm font-medium mb-1">Reimburse pre-approved expenses?
+        <span class="tip" title="Allows payback for client-related purchases; unclear rules cause disputes and tax issues.">❓</span>
+      </label>
+      <select id="reimburseAllowed" class="border rounded w-full p-2 mb-3">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div id="reimburseBox" class="hidden">
+        <p class="text-sm text-gray-600 mb-2">Pick required proof:</p>
+        <div class="grid sm:grid-cols-2 gap-2 mb-2">
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Original receipts"/> Original receipts</label>
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Mileage log"/> Mileage log</label>
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Itemized invoice"/> Itemized invoice</label>
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Written pre-approval"/> Written pre-approval</label>
+        </div>
+        <label class="block text-sm font-medium mb-1">Other documentation (optional)
+          <span class="tip" title="Extra proof (e.g., photo of purchase) can deter fraud; too strict may delay payback.">❓</span>
+        </label>
+        <input id="rbOtherText" class="border rounded w-full p-2 mb-3" placeholder="e.g., delivery photo or confirmation"/>
+      </div>
+
+      <!-- Insurance -->
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 5 — Insurance Requirement</h2>
+      <label class="block text-sm font-medium mb-1">Caregiver must carry insurance?
+        <span class="tip" title="Shifts risk to the caregiver’s carrier; absent coverage leaves the client exposed.">❓</span>
+      </label>
+      <select id="insuranceRequired" class="border rounded w-full p-2 mb-3">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div id="insuranceBox" class="hidden">
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Professional Liability (min)
+              <span class="tip" title="Errors/omissions coverage for clinical tasks. Common floor: $1,000,000/claim.">❓</span>
+            </label>
+            <input id="insProf" class="border rounded w-full p-2 mb-3" placeholder="$1,000,000 per claim"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">General Liability (min)
+              <span class="tip" title="Bodily injury/property damage. Common floor: $1,000,000/occurrence.">❓</span>
+            </label>
+            <input id="insGen" class="border rounded w-full p-2 mb-3" placeholder="$1,000,000 per occurrence"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notices & contacts -->
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 6 — Notices & Contacts</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Mandatory Reporting Contact (Name)
+            <span class="tip" title="Designated person for critical safety/legal notices; no contact can delay response.">❓</span>
+          </label>
+          <input id="reportName" class="border rounded w-full p-2 mb-3" placeholder="e.g., Adult Child / POA"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Contact Phone/Email
+            <span class="tip" title="Ensure fast delivery of time-sensitive notices. Keep it current.">❓</span>
+          </label>
+          <input id="reportInfo" class="border rounded w-full p-2 mb-3" placeholder="e.g., (555) 555-5555; name@email.com"/>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Security Monitoring in Common Areas?
+            <span class="tip" title="If used, disclosure is necessary; misuse may violate privacy/recording laws.">❓</span>
+          </label>
+          <select id="monitoring" class="border rounded w-full p-2 mb-3">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Termination Notice Period (days)
+            <span class="tip" title="Controls notice obligations; inconsistent terms risk wrongful termination claims.">❓</span>
+          </label>
+          <input id="noticeDays" class="border rounded w-full p-2 mb-3" placeholder="e.g., 14 or 30"/>
+        </div>
+      </div>
+
+      <!-- Live-in -->
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 7 — Live-In / On-Call Details</h2>
+      <label class="block text-sm font-medium mb-1">Live-in / Overnight?
+        <span class="tip" title="Triggers special sleep-time, on-call, and lodging deduction rules under wage law.">❓</span>
+      </label>
+      <select id="liveInType" class="border rounded w-full p-2 mb-3">
+        <option value="Live-Out">Live-Out</option>
+        <option value="Overnight">Overnight</option>
+        <option value="Live-In">Live-In</option>
+      </select>
+
+      <div id="liveInBox" class="hidden">
+        <label class="block text-sm font-medium mb-1">Private living space description
+          <span class="tip" title="Adequate quarters support lawful sleep-time exclusions and lodging credits.">❓</span>
+        </label>
+        <input id="quarters" class="border rounded w-full p-2 mb-3" placeholder="e.g., private bedroom, shared hall bathroom"/>
+
+        <div class="grid sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Sleep Time (hrs, max 8)
+              <span class="tip" title="Non-compensable only if legal prerequisites (e.g., 5 hrs uninterrupted) are met.">❓</span>
+            </label>
+            <input id="sleepHours" type="number" min="0" max="8" class="border rounded w-full p-2 mb-3" placeholder="e.g., 8"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">On-call during sleep?
+              <span class="tip" title="Interruptions are typically paid; inadequate rest can convert sleep time to paid hours.">❓</span>
+            </label>
+            <select id="onCall" class="border rounded w-full p-2 mb-3">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Room & Board deducted?
+              <span class="tip" title="Permissible only with lawful valuations and written consent; misuse creates wage liability.">❓</span>
+            </label>
+            <select id="roomBoard" class="border rounded w-full p-2 mb-3">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities -->
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 8 — Amenities</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Kitchen Use
+            <span class="tip" title="Defines personal meal prep rights; prevents meal break and wage disputes.">❓</span>
+          </label>
+          <select id="amenKitchen" class="border rounded w-full p-2 mb-3">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Laundry Use
+            <span class="tip" title="Clarifies personal vs. client laundry to avoid misuse claims.">❓</span>
+          </label>
+          <select id="amenLaundry" class="border rounded w-full p-2 mb-3">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Internet/TV Use
+            <span class="tip" title="Sets boundaries for personal use; supports productivity and privacy.">❓</span>
+          </label>
+          <select id="amenInternet" class="border rounded w-full p-2 mb-3">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Consume Client Food
+            <span class="tip" title="Clarifies in-kind benefits and potential wage credit implications.">❓</span>
+          </label>
+          <select id="amenFood" class="border rounded w-full p-2 mb-3">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Bond/Medicaid/Notes -->
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 9 — Bond / Medicaid / Notes</h2>
+      <label class="block text-sm font-medium mb-1">Fidelity Bond / Bondable?
+        <span class="tip" title="Coverage for theft/fraud; ‘bondable’ means eligible after screening.">❓</span>
+      </label>
+      <select id="bondStatus" class="border rounded w-full p-2 mb-3">
+        <option value="Neither required">Neither required</option>
+        <option value="Yes, a Fidelity Bond has been obtained.">Yes, a Fidelity Bond has been obtained.</option>
+        <option value="No, but the contract requires the Caregiver to be bondable.">No, but the contract requires the Caregiver to be bondable.</option>
+      </select>
+
+      <label class="block text-sm font-medium mb-1">Likely Medicaid within 5 years?
+        <span class="tip" title="Look-back review scrutinizes payments; fair-market value language supports eligibility.">❓</span>
+      </label>
+      <select id="medicaid" class="border rounded w-full p-2 mb-3">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        <option value="I don't know">I don't know</option>
+      </select>
+
+      <h2 class="text-xl font-bold mt-4 mb-2">Notes (optional)
+        <span class="tip" title="Printed verbatim; avoid sensitive data you don’t want disclosed.">❓</span>
+      </h2>
+      <textarea id="specialNotes" class="border rounded w-full p-2 mb-4" rows="3" placeholder="Any special instructions or limits to include verbatim"></textarea>
+
+      <hr class="my-5"/>
+
+      <!-- Checkout + Download -->
+      <h2 class="text-xl font-bold mb-3">Step 10 — Checkout & Download</h2>
+      <p class="help-sub mb-3">Complete payment to unlock copy & download. If you’ve already paid and returned here, the page will unlock automatically.</p>
+
+      <!-- Stripe Buy Button -->
+      <div class="mb-4">
+        <!-- Replace both attributes below with your real values -->
+        <stripe-buy-button
+          buy-button-id="BUY_BUTTON_ID_HERE"
+          publishable-key="PUBLISHABLE_KEY_HERE">
+        </stripe-buy-button>
+      </div>
+
+      <!-- Download button (locked until paid) -->
+      <button id="downloadNow" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+        Download Your Agreement
+      </button>
+      <div class="text-xs text-gray-500 mt-2" id="lockMsg">Copy & download are locked until payment is confirmed.</div>
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="bg-white border rounded-xl shadow p-5 relative">
+      <h2 class="text-xl font-bold mb-3">Live Preview (updates as you type)</h2>
+      <div class="relative min-h-[520px] border rounded p-3">
+        <div id="lockBadge" class="locked-badge">Locked until purchase</div>
+        <pre id="preview" class="text-sm whitespace-pre-wrap leading-5 no-copy"></pre>
+        <div id="wm" class="draft-watermark absolute inset-0 flex items-center justify-center text-center">
+          UNPAID DRAFT • COPY DISABLED
+        </div>
+      </div>
+    </section>
+  </main>
 
 <script>
-/* ========= CONFIG ========= */
-const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // caregiver price you provided
-const SUCCESS_PATH = "/caregiver/success.html";
+  // ----- PAID STATE via URL PARAM ?paid=1 -----
+  const urlParams = new URLSearchParams(window.location.search);
+  let isPaid = urlParams.get('paid') === '1';
 
-/* ========= FORM MODEL =========
-   We use steps with radio/selects wherever possible.
-   Nothing from your previous working flow is removed; we’re only adding or clarifying fields.
-*/
-const STATES = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming","District of Columbia"];
+  // ----- DOM refs -----
+  const reimburseAllowed = document.getElementById('reimburseAllowed');
+  const reimburseBox     = document.getElementById('reimburseBox');
+  const insuranceRequired= document.getElementById('insuranceRequired');
+  const insuranceBox     = document.getElementById('insuranceBox');
+  const liveInType       = document.getElementById('liveInType');
+  const liveInBox        = document.getElementById('liveInBox');
+  const previewEl        = document.getElementById('preview');
+  const wmEl             = document.getElementById('wm');
+  const lockBadge        = document.getElementById('lockBadge');
+  const downloadBtn      = document.getElementById('downloadNow');
+  const lockMsg          = document.getElementById('lockMsg');
 
-const steps = [
-/* 1. About You & Parties */
-{
-  title: "About You & Parties",
-  fields: [
-    {ref:"buyerEmail", label:"Your Email", type:"email", required:true, placeholder:"you@example.com"},
-    {ref:"buyerName", label:"Your Name", type:"text", required:false, placeholder:"Your full name"},
-    {ref:"clientName", label:"Client (person receiving care) — Full Name", type:"text", required:true, placeholder:"Client full legal name"},
-    {ref:"caregiverName", label:"Caregiver — Full Name", type:"text", required:true, placeholder:"Caregiver full legal name"},
-    {ref:"arrangementType", label:"Arrangement Type", type:"select", required:true, options:["W-2 Employee","1099 Independent Contractor"]},
-    {ref:"state", label:"State of Service", type:"select", required:true, options:STATES},
-    {ref:"county", label:"County/City for arbitration/venue", type:"text", required:true, placeholder:"e.g., Westchester County"},
-    {ref:"clientAddr", label:"Client Service Address (workplace)", type:"text", required:true, placeholder:"Street, City, State ZIP"},
-    {ref:"employerSigner", label:"Employer/Signer Name (who signs & pays)", type:"text", required:true, placeholder:"e.g., Daughter (POA) — Jane Doe"},
-    {ref:"employerAddr", label:"Employer/Client Mailing Address", type:"text", required:true, placeholder:"Street, City, State ZIP"}
-  ]
-},
-
-/* 2. Basics & Pay */
-{
-  title: "Basics & Pay",
-  fields: [
-    {ref:"startDate", label:"Start Date", type:"date", required:true},
-    {ref:"careLocation", label:"Care Location (city/state)", type:"text", required:true, placeholder:"e.g., Scarsdale, NY"},
-    {ref:"payStructureEmp", label:"Employee Pay Structure", type:"radio", required:true, showIf:{arrangementType:"W-2 Employee"}, options:["Hourly","Fixed Daily Rate","Fixed Weekly/Salary Rate"]},
-    {ref:"rateHourly", label:"Hourly Rate ($/hr)", type:"number", step:"0.01", min:"0", required:true, showIf:{arrangementType:"W-2 Employee", payStructureEmp:"Hourly"}},
-    {ref:"rateDaily", label:"Fixed Daily Amount ($/day)", type:"number", step:"0.01", min:"0", required:true, showIf:{arrangementType:"W-2 Employee", payStructureEmp:"Fixed Daily Rate"}},
-    {ref:"rateWeekly", label:"Fixed Weekly/Salary Amount ($/wk)", type:"number", step:"0.01", min:"0", required:true, showIf:{arrangementType:"W-2 Employee", payStructureEmp:"Fixed Weekly/Salary Rate"}},
-    {ref:"paySchedule", label:"Pay Schedule", type:"select", required:true, options:["weekly","biweekly","monthly"]},
-    {ref:"hoursSchedule", label:"Typical Hours / Days", type:"textarea", required:true, placeholder:"e.g., Mon–Fri 9am–5pm; occasional weekends"},
-    {ref:"weeklyHours", label:"Expected Total Weekly Hours", type:"number", min:"1", required:true},
-    /* IC */
-    {ref:"icPayType", label:"Independent Contractor — Payment Method", type:"radio", required:true, showIf:{arrangementType:"1099 Independent Contractor"}, options:["Project Fee","Milestones","Retainer"]},
-    {ref:"icTotal", label:"IC: Total Fee/Retainer ($)", type:"number", step:"0.01", min:"0", required:true, showIf:{arrangementType:"1099 Independent Contractor"}}
-  ]
-},
-
-/* 3. Duties (Service Categories) — ADDED */
-{
-  title: "Service Categories & Details",
-  fields: [
-    {ref:"svcPersonal", label:"Personal Care (bathing, grooming, dressing, toileting, mobility assistance)", type:"checkbox"},
-    {ref:"svcPersonalDetails", label:"Personal Care — details/limits", type:"textarea", placeholder:"e.g., transfer belt; bathing schedule"},
-    {ref:"svcMedical", label:"Medical/Health Support (med reminders/admin, appts, vitals)", type:"checkbox"},
-    {ref:"svcMedicalDetails", label:"Medical/Health — details/limits", type:"textarea", placeholder:"e.g., reminders only; record BP daily"},
-    {ref:"svcHousehold", label:"Household Tasks (light housekeeping, laundry, dishes, meal prep, errands)", type:"checkbox"},
-    {ref:"svcHouseholdDetails", label:"Household — details", type:"textarea", placeholder:"e.g., vacuum weekly; laundry 1x/week; low-salt meal prep"},
-    {ref:"svcCompanionship", label:"Companionship (social interaction, reading, hobbies, transportation)", type:"checkbox"},
-    {ref:"svcCompanionshipDetails", label:"Companionship — details", type:"textarea", placeholder:"e.g., daily walk 20 min; read newspaper; drive on Fridays"},
-    {ref:"svcOther", label:"Other services (add anything else)", type:"checkbox"},
-    {ref:"svcOtherDetails", label:"Other — details", type:"textarea", placeholder:"Describe any additional duties"}
-  ]
-},
-
-/* 4. Funds, Reimbursement, Medicaid */
-{
-  title: "Funds, Reimbursement & Medicaid",
-  fields: [
-    {ref:"pettyCashAllowed", label:"Will Caregiver handle petty cash for authorized purchases?", type:"radio", required:true, options:["Yes","No"]},
-    {ref:"pettyCashMax", label:"Max petty cash per transaction ($)", type:"number", step:"0.01", min:"0", required:true, showIf:{pettyCashAllowed:"Yes"}},
-    {ref:"reimburseAllowed", label:"Reimbursement for pre-approved necessary expenses?", type:"radio", required:true, options:["Yes","No"]},
-    {ref:"rbReceipts", label:"Require: Original receipts", type:"checkbox", showIf:{reimburseAllowed:"Yes"}},
-    {ref:"rbMileage", label:"Require: Mileage log", type:"checkbox", showIf:{reimburseAllowed:"Yes"}},
-    {ref:"rbInvoice", label:"Require: Itemized invoice", type:"checkbox", showIf:{reimburseAllowed:"Yes"}},
-    {ref:"rbPreapproval", label:"Require: Written pre-approval", type:"checkbox", showIf:{reimburseAllowed:"Yes"}},
-    {ref:"rbOther", label:"Other documentation (optional)", type:"text", placeholder:"e.g., delivery confirmation", showIf:{reimburseAllowed:"Yes"}},
-    {ref:"medicaidRisk", label:"Medicaid look-back risk for next 5 years?", type:"radio", required:true, options:["Yes","No","I don't know"], help:"If Yes/Unsure, we insert strong 'Fair Market Value' language."}
-  ]
-},
-
-/* 5. Live-In / Overnight / Amenities */
-{
-  title: "Live-In / Overnight & Amenities",
-  fields: [
-    {ref:"liveInType", label:"Does this include Overnight or Live-In?", type:"radio", required:true, options:["Live-Out","Overnight","Live-In"]},
-    {ref:"privateQuarters", label:"Describe private living space (if Overnight/Live-In)", type:"text", placeholder:"e.g., Private bedroom with shared hall bath", showIfAny:[{liveInType:"Overnight"},{liveInType:"Live-In"}]},
-    {ref:"sleepHours", label:"Designated non-compensable sleep hours (max 8)", type:"number", min:"0", max:"8", showIfAll:[{arrangementType:"W-2 Employee"},{liveInType:"Overnight,Live-In"}]},
-    {ref:"onCallSleep", label:"During sleep time, is employee 'on-call'?", type:"radio", options:["Yes","No"], showIfAll:[{arrangementType:"W-2 Employee"},{liveInType:"Overnight,Live-In"}]},
-    {ref:"roomBoardDeduct", label:"Will Room & Board value be deducted from wages?", type:"radio", options:["Yes","No"], showIfAll:[{arrangementType:"W-2 Employee"},{liveInType:"Overnight,Live-In"}]},
-    /* Amenities */
-    {ref:"amKitchen", label:"Amenities: Kitchen use for personal meals?", type:"radio", required:true, options:["Yes","No"]},
-    {ref:"amLaundry", label:"Amenities: Washer/Dryer for personal clothing?", type:"radio", required:true, options:["Yes","No"]},
-    {ref:"amInternet", label:"Amenities: Home Wi-Fi/TV for limited personal use?", type:"radio", required:true, options:["Yes","No"]},
-    {ref:"amFood", label:"Amenities: May consume family/client food/groceries?", type:"radio", required:true, options:["Yes","No"]}
-  ]
-},
-
-/* 6. Safety, Insurance, Monitoring, Notes */
-{
-  title: "Safety, Insurance, Monitoring & Notes",
-  fields: [
-    {ref:"bonding", label:"Bonding / Fidelity", type:"select", required:true, options:["Yes, a Fidelity Bond has been obtained.","No, but caregiver must be bondable.","Neither required"]},
-    {ref:"monitoring", label:"Monitoring devices in common areas?", type:"radio", required:true, options:["Yes","No"], help:"Never in private rooms/bathrooms."},
-    {ref:"reportName", label:"Mandatory Reporting Contact — Name", type:"text", required:true},
-    {ref:"reportContact", label:"Mandatory Reporting Contact — Phone/Email", type:"text", required:true},
-    {ref:"noticeDays", label:"Termination Notice Period (days)", type:"number", min:"7", required:true},
-    /* Insurance requirement (NEW explicit Q) */
-    {ref:"insRequired", label:"Is caregiver required to maintain insurance?", type:"radio", required:true, options:["Yes","No"]},
-    {ref:"insProf", label:"Professional Liability (min coverage)", type:"text", placeholder:"e.g., $1,000,000 per claim", showIf:{insRequired:"Yes"}},
-    {ref:"insGen", label:"General Liability (min coverage)", type:"text", placeholder:"e.g., $1,000,000 per occurrence", showIf:{insRequired:"Yes"}},
-    {ref:"notes", label:"Notes (optional)", type:"textarea", placeholder:"Any limits or instructions to include verbatim"}
-  ]
-},
-
-/* 7. Review & Checkout (no fields; shows summary & Buy button) */
-{
-  title: "Review & Checkout",
-  fields: []
-}
-];
-
-const state = {}; // form answers
-
-/* ========= RENDERING ========= */
-const el = (tag, attrs={}, html="")=>{
-  const n = document.createElement(tag);
-  Object.entries(attrs).forEach(([k,v])=>{
-    if (k==="class") n.className=v;
-    else if (k==="for") n.htmlFor=v;
-    else n.setAttribute(k,v);
-  });
-  if (html) n.innerHTML = html;
-  return n;
-};
-
-let stepIndex = 0;
-
-function showStep(idx){
-  stepIndex = idx;
-  const root = document.getElementById("formMount");
-  root.innerHTML = "";
-  const s = steps[stepIndex];
-
-  // title
-  root.appendChild(el("h2",{class:"text-xl font-bold mb-3"}, s.title));
-
-  s.fields.forEach(f=>{
-    if (!shouldShow(f)) return;
-
-    const wrap = el("div",{class:"mb-4"});
-    wrap.appendChild(el("label",{class:"block text-sm font-medium mb-1", for:f.ref}, f.label));
-
-    let control;
-    if (f.type==="text" || f.type==="email" || f.type==="date" || f.type==="number") {
-      control = el("input",{id:f.ref, class:"border rounded w-full p-2", type:f.type, placeholder:f.placeholder||"", step:f.step||"", min:f.min||"", max:f.max||""});
-      if (state[f.ref]!=null) control.value = state[f.ref];
-      control.addEventListener("input", onChange);
-    } else if (f.type==="textarea") {
-      control = el("textarea",{id:f.ref, class:"border rounded w-full p-2", rows:"2", placeholder:f.placeholder||""});
-      if (state[f.ref]!=null) control.value = state[f.ref];
-      control.addEventListener("input", onChange);
-    } else if (f.type==="select") {
-      control = el("select",{id:f.ref, class:"border rounded w-full p-2"});
-      (f.options||[]).forEach(opt=>{
-        const o = el("option", {value:opt}, opt);
-        if (state[f.ref]===opt) o.selected = true;
-        control.appendChild(o);
-      });
-      control.addEventListener("change", onChange);
-    } else if (f.type==="radio") {
-      control = el("div",{class:"space-y-2"});
-      (f.options||[]).forEach((opt,i)=>{
-        const lid = f.ref + "_" + i;
-        const row = el("label",{class:"flex items-center gap-2", for:lid});
-        const r = el("input",{type:"radio", id:lid, name:f.ref, value:opt});
-        if (state[f.ref]===opt) r.checked = true;
-        r.addEventListener("change", onChange);
-        row.appendChild(r);
-        row.appendChild(el("span",{}, opt));
-        control.appendChild(row);
-      });
-    } else if (f.type==="checkbox") {
-      control = el("input",{id:f.ref, type:"checkbox", class:"h-4 w-4"});
-      if (state[f.ref]===true) control.checked = true;
-      control.addEventListener("change", onChange);
+  function toggleBoxes() {
+    if (reimburseAllowed && reimburseBox) {
+      reimburseBox.classList.toggle('hidden', reimburseAllowed.value !== 'Yes');
     }
-
-    wrap.appendChild(control);
-    if (f.help) wrap.appendChild(el("p",{class:"qhelp text-xs p-2 rounded mt-2"}, f.help));
-    if (f.required) wrap.appendChild(el("div",{class:"text-[11px] text-gray-500 mt-1"}, "Required"));
-
-    root.appendChild(wrap);
-  });
-
-  // nav state
-  document.getElementById("btnBack").classList.toggle("hidden", stepIndex===0);
-  const isLast = (stepIndex===steps.length-1);
-  document.getElementById("btnNext").classList.toggle("hidden", isLast);
-  document.getElementById("checkoutBlock").classList.toggle("hidden", !isLast);
-  document.getElementById("stepLabel").textContent = (stepIndex+1);
-  document.getElementById("stepTotal").textContent = steps.length;
-
-  paintDots();
-  refreshPreview();
-}
-
-function shouldShow(f){
-  // showIf exact
-  if (f.showIf){
-    return Object.entries(f.showIf).every(([k,v])=>{
-      return state[k]===v;
-    });
-  }
-  // showIfAll: array of {key: value or csv}
-  if (f.showIfAll){
-    return f.showIfAll.every(rule=>{
-      const key = Object.keys(rule)[0];
-      const val = rule[key];
-      if (String(val).includes(",")) {
-        return String(val).split(",").map(x=>x.trim()).includes(state[key]);
-      }
-      return state[key]===val;
-    });
-  }
-  // showIfAny: array of {key: value}
-  if (f.showIfAny){
-    return f.showIfAny.some(rule=>{
-      const key = Object.keys(rule)[0];
-      const val = rule[key];
-      return state[key]===val;
-    });
-  }
-  return true;
-}
-
-function onChange(ev){
-  const t = ev.target;
-  // radios have name
-  if (t.type==="radio"){
-    state[t.name] = t.value;
-  } else if (t.type==="checkbox"){
-    state[t.id] = t.checked;
-  } else {
-    state[t.id] = t.value;
-  }
-  // re-render if visibility dependencies can change
-  showStep(stepIndex);
-}
-
-function validateStep(){
-  const s = steps[stepIndex];
-  for (const f of s.fields){
-    if (!shouldShow(f)) continue;
-    if (!f.required) continue;
-    const v = state[f.ref];
-    if (f.type==="checkbox"){
-      // required checkbox → must be true
-      if (v!==true) return false;
-    } else {
-      if (v==null || String(v).trim()==="") return false;
+    if (insuranceRequired && insuranceBox) {
+      insuranceBox.classList.toggle('hidden', insuranceRequired.value !== 'Yes');
+    }
+    if (liveInType && liveInBox) {
+      const show = (liveInType.value === 'Overnight' || liveInType.value === 'Live-In');
+      liveInBox.classList.toggle('hidden', !show);
     }
   }
-  return true;
-}
 
-function nextStep(){
-  if (!validateStep()){
-    alert("Please complete all required fields on this step.");
-    return;
-  }
-  if (stepIndex < steps.length-1){
-    showStep(stepIndex+1);
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
-}
-function prevStep(){
-  if (stepIndex>0){
-    showStep(stepIndex-1);
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
-}
+  reimburseAllowed?.addEventListener('change', () => { toggleBoxes(); refreshPreview(); });
+  insuranceRequired?.addEventListener('change', () => { toggleBoxes(); refreshPreview(); });
+  liveInType?.addEventListener('change', () => { toggleBoxes(); refreshPreview(); });
 
-function paintDots(){
-  const d = document.getElementById("stepDots");
-  d.innerHTML = "";
-  for (let i=0;i<steps.length;i++){
-    d.appendChild(el("div",{class:"step-dot"+(i===stepIndex?" active":"")}));
-  }
-}
+  // Build agreement content
+  function buildDraftContent() {
+    const buyerEmail   = (document.getElementById('buyerEmail')?.value || '').trim();
+    const buyerName    = (document.getElementById('buyerName')?.value || '').trim();
+    const clientName   = (document.getElementById('clientName')?.value || '').trim();
+    const caregiverName= (document.getElementById('caregiverName')?.value || '').trim();
+    const arrangement  = document.getElementById('arrangementType')?.value || '';
+    const startDate    = document.getElementById('startDate')?.value || '';
+    const careLocation = (document.getElementById('careLocation')?.value || '').trim();
+    const payRate      = (document.getElementById('payRate')?.value || '').trim();
+    const paySchedule  = (document.getElementById('paySchedule')?.value || '').trim();
+    const hours        = (document.getElementById('hoursSchedule')?.value || '').trim();
 
-/* ========= PREVIEW BUILDER ========= */
-function buildServices(){
-  const rows = [];
-  if (state.svcPersonal) rows.push("• Personal Care — " + (state.svcPersonalDetails||"as specified"));
-  if (state.svcMedical) rows.push("• Medical/Health Support — " + (state.svcMedicalDetails||"as specified"));
-  if (state.svcHousehold) rows.push("• Household Tasks — " + (state.svcHouseholdDetails||"as specified"));
-  if (state.svcCompanionship) rows.push("• Companionship — " + (state.svcCompanionshipDetails||"as specified"));
-  if (state.svcOther) rows.push("• Other Services — " + (state.svcOtherDetails||"as specified"));
-  return rows.length? rows.join("\n") : "• (None selected)";
-}
-
-function buildReimburse(){
-  if (state.reimburseAllowed==="Yes"){
-    const docs = [];
-    if (state.rbReceipts) docs.push("Original receipts");
-    if (state.rbMileage) docs.push("Mileage log");
-    if (state.rbInvoice) docs.push("Itemized invoice");
-    if (state.rbPreapproval) docs.push("Written pre-approval");
-    if ((state.rbOther||"").trim()) docs.push("Other: "+state.rbOther.trim());
-    return `Reimbursement: Allowed for pre-approved, necessary expenses.\nRequired documentation: ${docs.length? docs.join(", ") : "as requested"}.`;
-  }
-  return "Reimbursement: Not allowed without prior written approval.";
-}
-
-function buildInsurance(){
-  if (state.insRequired==="Yes"){
-    return `Caregiver Insurance: Required. Minimum coverage — Professional Liability: ${state.insProf||"(specify)"}; General Liability: ${state.insGen||"(specify)"}.
-`;
-  }
-  return "Caregiver Insurance: Not required under this Agreement (unless required by law).\n";
-}
-
-function buildCompensation(){
-  if (state.arrangementType==="W-2 Employee"){
-    if (state.payStructureEmp==="Hourly"){
-      return `Compensation — Employee (Hourly)\nRate: ${state.rateHourly?("$"+Number(state.rateHourly).toFixed(2)+"/hr"):"[Rate]"}\nPay Schedule: ${state.paySchedule||"[Schedule]"}\nTypical Hours/Days: ${state.hoursSchedule||"[e.g., Mon–Fri 9–5]"}\nExpected Weekly Hours: ${state.weeklyHours||"[hours]"}\n`;
-    } else if (state.payStructureEmp==="Fixed Daily Rate"){
-      return `Compensation — Employee (Fixed Daily)\nDaily Amount: ${state.rateDaily?("$"+Number(state.rateDaily).toFixed(2)):"[Daily Amount]"}\nPay Schedule: ${state.paySchedule||"[Schedule]"}\nTypical Hours/Days: ${state.hoursSchedule||"[e.g., Mon–Fri 9–5]"}\nExpected Weekly Hours: ${state.weeklyHours||"[hours]"}\n`;
-    } else {
-      return `Compensation — Employee (Fixed Weekly/Salary)\nWeekly Amount: ${state.rateWeekly?("$"+Number(state.rateWeekly).toFixed(2)):"[Weekly Amount]"}\nPay Schedule: ${state.paySchedule||"[Schedule]"}\nTypical Hours/Days: ${state.hoursSchedule||"[e.g., Mon–Fri 9–5]"}\nExpected Weekly Hours: ${state.weeklyHours||"[hours]"}\n`;
+    // services
+    const svc = [];
+    if (document.getElementById('svcPersonal')?.checked) {
+      svc.push({label: "Personal Care", details: (document.getElementById('svcPersonalDetails')?.value || '').trim()});
     }
-  } else {
-    return `Compensation — Independent Contractor\nPayment Method: ${state.icPayType||"[Method]"}\nTotal Fee/Retainer: ${state.icTotal?("$"+Number(state.icTotal).toFixed(2)):"[Amount]"}\nTypical Hours/Days: ${state.hoursSchedule||"[e.g., Mon–Fri 9–5]"}\n`;
-  }
-}
-
-function buildFunds(){
-  const petty = (state.pettyCashAllowed==="Yes")
-    ? `Authorized petty cash for specific purchases, up to $${Number(state.pettyCashMax||0).toFixed(2)} per transaction.`
-    : `No petty cash handling is authorized without written approval.`;
-  const medicaid = (state.medicaidRisk && state.medicaidRisk!=="No")
-    ? `Medicaid Look-Back Warning: Compensation/duties reflect Fair Market Value to protect eligibility within the 5-year look-back.`
-    : `Medicaid Look-Back: Not indicated as a risk by Client.`;
-  return petty + "\n" + medicaid;
-}
-
-function buildLiveIn(){
-  let s = `Arrangement: ${state.liveInType||"[Live-Out/Overnight/Live-In]"}\n`;
-  if (state.liveInType==="Overnight" || state.liveInType==="Live-In"){
-    s += `Private Quarters: ${state.privateQuarters||"(describe)"}\n`;
-    if (state.arrangementType==="W-2 Employee"){
-      s += `Sleep Time: ${state.sleepHours||"0"} hrs designated non-compensable (if 5+ hrs uninterrupted sleep).\n`;
-      s += `On-Call During Sleep: ${state.onCallSleep||"[Yes/No]"}\n`;
-      s += `Room & Board Deduction: ${state.roomBoardDeduct||"[Yes/No]"}\n`;
-    } else {
-      s += `Note: Live-In IC arrangements may imply employment; review classification risk.\n`;
+    if (document.getElementById('svcMedical')?.checked) {
+      svc.push({label: "Medical/Health Support", details: (document.getElementById('svcMedicalDetails')?.value || '').trim()});
     }
-  }
-  s += `\nAmenities\n- Kitchen: ${state.amKitchen||"[Yes/No]"}\n- Laundry: ${state.amLaundry||"[Yes/No]"}\n- Internet/TV: ${state.amInternet||"[Yes/No]"}\n- Food: ${state.amFood||"[Yes/No]"}\n`;
-  return s;
-}
+    if (document.getElementById('svcHousehold')?.checked) {
+      svc.push({label: "Household Tasks", details: (document.getElementById('svcHouseholdDetails')?.value || '').trim()});
+    }
+    if (document.getElementById('svcCompanionship')?.checked) {
+      svc.push({label: "Companionship", details: (document.getElementById('svcCompanionshipDetails')?.value || '').trim()});
+    }
+    if (document.getElementById('svcOther')?.checked) {
+      svc.push({label: "Other Services", details: (document.getElementById('svcOtherDetails')?.value || '').trim()});
+    }
+    const svcLines = svc.length ? svc.map(s => `• ${s.label}${s.details ? ` — ${s.details}` : ""}`).join('\n') : "• (No services selected)";
 
-function buildHIPAA(){
-return `Confidentiality & Privacy (HIPAA)
-The Caregiver will maintain strict confidentiality of all Client information; will not disclose without written consent (unless required by law); and will comply with applicable state/federal privacy laws, including HIPAA, to the extent applicable.`;
-}
+    // reimbursement
+    const reimb = document.getElementById('reimburseAllowed')?.value || 'No';
+    let rbDocs = [];
+    document.querySelectorAll('.rbDoc:checked').forEach(cb => rbDocs.push(cb.value));
+    const rbOther = (document.getElementById('rbOtherText')?.value || '').trim();
+    const reimbBlock = reimb === 'Yes'
+      ? `Reimbursement: Allowed for pre-approved, necessary expenses incurred on behalf of the Client.
+Required documentation: ${rbDocs.length ? rbDocs.join(', ') : "as requested"}${rbOther ? `; Other: ${rbOther}` : ""}.`
+      : `Reimbursement: Not allowed without prior written approval.`;
 
-function buildIndemn(){
-return `Indemnification
-The Caregiver agrees to indemnify and hold harmless the Client from claims, losses, damages, or liability arising from the Caregiver’s negligence, gross misconduct, or intentional acts.`;
-}
+    // insurance
+    const insReq = document.getElementById('insuranceRequired')?.value || 'No';
+    const insProf = (document.getElementById('insProf')?.value || '').trim();
+    const insGen  = (document.getElementById('insGen')?.value || '').trim();
+    const insuranceBlock = insReq === 'Yes'
+      ? `Caregiver Insurance: Required. Minimum coverage: Professional Liability ${insProf || "(specify)"}; General Liability ${insGen || "(specify)"}.`
+      : `Caregiver Insurance: Not required under this Agreement (unless required by law).`;
 
-function buildBondingMonitoring(){
-  const b = state.bonding || "";
-  const m = (state.monitoring==="Yes")
-    ? "Notice: Video/audio monitoring is in use in common areas only (never private rooms/bathrooms)."
-    : "No monitoring devices are in use.";
-  return `Bonding/Fidelity: ${b}\n${m}`;
-}
+    // notices
+    const reportName = (document.getElementById('reportName')?.value || '').trim();
+    const reportInfo = (document.getElementById('reportInfo')?.value || '').trim();
+    const monitoring = document.getElementById('monitoring')?.value || 'No';
+    const noticeDays = (document.getElementById('noticeDays')?.value || '').trim();
 
-function buildPreviewText(){
-  const svcBlock = buildServices();
-  const reimb = buildReimburse();
-  const ins = buildInsurance();
-  const comp = buildCompensation();
-  const funds = buildFunds();
-  const live = buildLiveIn();
-  const hipaa = buildHIPAA();
-  const indemn = buildIndemn();
-  const bondMon = buildBondingMonitoring();
+    // live-in
+    const liveIn = document.getElementById('liveInType')?.value || 'Live-Out';
+    const quarters = (document.getElementById('quarters')?.value || '').trim();
+    const sleepHours = (document.getElementById('sleepHours')?.value || '').trim();
+    const onCall = document.getElementById('onCall')?.value || 'No';
+    const roomBoard = document.getElementById('roomBoard')?.value || 'No';
 
-  return `
+    // amenities
+    const amenKitchen = document.getElementById('amenKitchen')?.value || 'No';
+    const amenLaundry = document.getElementById('amenLaundry')?.value || 'No';
+    const amenInternet = document.getElementById('amenInternet')?.value || 'No';
+    const amenFood = document.getElementById('amenFood')?.value || 'No';
+
+    // bond/medicaid/notes
+    const bondStatus = document.getElementById('bondStatus')?.value || 'Neither required';
+    const medicaid   = document.getElementById('medicaid')?.value || 'No';
+    const specialNotes = (document.getElementById('specialNotes')?.value || '').trim();
+
+    // clauses
+    const hipaa = `Confidentiality and Privacy (HIPAA Compliance)
+The Caregiver acknowledges access to private, confidential, and protected health information (PHI) relating to the Client and agrees:
+1) To maintain the strict confidentiality of all Client information;
+2) Not to disclose such information to third parties without the Client's or legal representative's explicit written consent, unless required by law; and
+3) To comply with all applicable state and federal privacy laws, including HIPAA, to the extent applicable.`;
+
+    const indemn = `Indemnification
+The Caregiver agrees to indemnify and hold harmless the Client from and against any and all claims, losses, damages, or liability arising from the Caregiver’s negligence, gross misconduct, or intentional acts.`;
+
+    const amenitiesTable =
+`Amenity                 | Permitted? | Notes
+------------------------|------------|------
+Kitchen / Appliances    | ${amenKitchen}    | ${amenKitchen === 'Yes' ? 'Use allowed during breaks for personal meals.' : 'Only for Client meal prep.'}
+Laundry (Washer/Dryer)  | ${amenLaundry}    | ${amenLaundry === 'Yes' ? 'Personal clothing permitted.' : 'Client linens only.'}
+Internet / TV           | ${amenInternet}    | ${amenInternet === 'Yes' ? 'Personal use ok (limited bandwidth).' : 'No personal use during service hours.'}
+Food / Groceries        | ${amenFood}    | ${amenFood === 'Yes' ? 'May consume household food.' : 'Not permitted unless provided.'}`;
+
+    const monitoringLine = (monitoring === 'Yes')
+      ? 'NOTICE: Video and/or audio monitoring is in use in common areas only (never in private rooms).'
+      : 'Monitoring: None in use.';
+
+    const liveInBlock = (liveIn === 'Live-Out')
+      ? 'Arrangement: Live-Out.'
+      : `Arrangement: ${liveIn}
+Private Quarters: ${quarters || '(describe)'}
+Sleep Time: ${sleepHours || '0'} hours designated as non-compensable (if legal requirements are met)
+On-Call During Sleep: ${onCall}
+Room & Board Deduction: ${roomBoard}`;
+
+    const medicaidBlock = (medicaid === 'No') ? '' :
+`Medicaid Look-Back Warning
+If the Care Recipient applies for Medicaid Long-Term Care within the 5-year look-back period, payments under this contract may be scrutinized. The Parties affirm compensation and duties are Fair Market Value to protect eligibility.`;
+
+    const scopeLines =
+`Scope of Services
+${svcLines}
+
+${reimbBlock}
+
+${insuranceBlock}`;
+
+    const content = `
 CAREGIVER SERVICES AGREEMENT
 
-Client: ${state.clientName||"[Client Name]"}
-Caregiver: ${state.caregiverName||"[Caregiver Name]"}
-Arrangement Type: ${state.arrangementType||"[W-2/1099]"}
-Start Date: ${state.startDate||"[Start Date]"}
-Care Location: ${state.careLocation||"[City/State]"}
-Governing Law: ${state.state||"[State]"}
-Arbitration Venue: ${state.county||"[County/City]"}
-Workplace Address: ${state.clientAddr||"[Address]"}
+Client: ${clientName || "[Client Name]"}
+Caregiver: ${caregiverName || "[Caregiver Name]"}
+Arrangement Type: ${arrangement}
+Start Date: ${startDate || "[Start Date]"}
+Care Location: ${careLocation || "[City/State]"}
 
-${comp}
+Compensation
+Rate: ${payRate || "[Rate]"}
+Pay Schedule: ${paySchedule || "[Schedule]"}
+Typical Hours/Days: ${hours || "[e.g., Mon–Fri, 9am–5pm]"}
 
-Scope of Services
-${svcBlock}
+${scopeLines}
 
-${reimb}
-
-${ins}
 ${hipaa}
 
 ${indemn}
 
-Funds & Financial Limits
-${funds}
+Mandatory Reporting
+Contact: ${reportName || "[Name]"} — ${reportInfo || "[Phone/Email]"}
 
-Live-In / Overnight & Amenities
-${live}
+Security / Monitoring
+${monitoringLine}
 
-Safety, Reporting & Conduct
-Mandatory Reporting to: ${state.reportName||"[Name]"} (${state.reportContact||"[Contact]"})
-Notice to Terminate: ${state.noticeDays||"[days]"} days
-${bondMon}
+Live-In / Overnight
+${liveInBlock}
 
-Special Notes
-${(state.notes||"(none)")}
+Amenities
+${amenitiesTable}
+
+Termination
+Either party may terminate with ${noticeDays || "[X]"} days’ written notice. For cause (e.g., abuse, theft, gross negligence, breach of confidentiality), termination may be immediate.
+
+${medicaidBlock}
+
+Special Notes (if any)
+${specialNotes || "(none)"}
 
 Signatures
-Client: ______________________   Date: __________
-Caregiver: ____________________   Date: __________
+Client: ____________________________   Date: _____________
+Caregiver: _________________________   Date: _____________
 `.trim();
-}
 
-function refreshPreview(){
-  document.getElementById("preview").textContent = buildPreviewText();
-}
+    const nameForFile = (clientName || caregiverName || 'Customer').replace(/[^a-z0-9\- ]+/gi,'_');
+    return { content, product: "Caregiver Services Agreement", name: nameForFile, email: buyerEmail };
+  }
 
-/* ========= CHECKOUT FLOW ========= */
-async function saveDraft(){
-  const email = (state.buyerEmail||"").trim();
-  const name = (state.buyerName||state.caregiverName||state.clientName||"Customer").trim();
-  const product = "Caregiver Services Agreement";
-  const content = buildPreviewText();
+  function refreshPreview() {
+    const { content } = buildDraftContent();
+    previewEl.textContent = content;
+  }
 
-  const r = await fetch('/.netlify/functions/save-draft', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ email, name, product, content })
-  });
-  if (!r.ok) throw new Error("save-draft failed");
-  return r.json(); // {draftId}
-}
-
-async function startCheckout(){
-  try{
-    if (!state.buyerEmail || !String(state.buyerEmail).includes("@")){
-      alert("Please enter your email first.");
-      return;
-    }
-    const ok = validateStep(); // ensure the final step also passes the earlier required checks
-    if (!ok){ alert("Please complete required fields before checkout."); return; }
-
-    const { draftId } = await saveDraft();
-
-    const r = await fetch('/.netlify/functions/create-checkout', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        draftId,
-        email: state.buyerEmail,
-        priceId: PRICE_ID,
-        successPath: SUCCESS_PATH
-      })
+  function wireLivePreview() {
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(el => {
+      const evt = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
+      el.addEventListener(evt, refreshPreview);
     });
-    if (!r.ok){
-      const t = await r.text();
-      console.error(t);
-      alert("Could not start checkout.");
+  }
+
+  // ----- Copy/selection lock (until paid) -----
+  function lockContext(e){ if(!isPaid){ e.preventDefault(); } }
+  function keyGuard(e){
+    if(isPaid) return;
+    const mac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    const mod = mac ? e.metaKey : e.ctrlKey;
+    if(mod && (e.key.toLowerCase()==='c' || e.key.toLowerCase()==='a')){
+      e.preventDefault(); e.stopPropagation();
+    }
+  }
+  function applyLockState(){
+    if(isPaid){
+      previewEl.classList.remove('no-copy');
+      document.removeEventListener('keydown', keyGuard, true);
+      previewEl.removeEventListener('contextmenu', lockContext);
+      wmEl.textContent = 'PAID — PREVIEW UNLOCKED';
+      wmEl.style.color = 'rgba(16,185,129,.16)';
+      lockBadge.style.display = 'none';
+      downloadBtn.disabled = false;
+      lockMsg.textContent = 'Payment confirmed — you can now download and copy your agreement.';
+    }else{
+      previewEl.classList.add('no-copy');
+      document.addEventListener('keydown', keyGuard, true);
+      previewEl.addEventListener('contextmenu', lockContext, { passive:false });
+      wmEl.textContent = 'UNPAID DRAFT • COPY DISABLED';
+      wmEl.style.color = 'rgba(16,185,129,.10)';
+      lockBadge.style.display = 'inline-block';
+      downloadBtn.disabled = true;
+      lockMsg.textContent = 'Copy & download are locked until payment is confirmed.';
+    }
+  }
+
+  // ----- Download handler (enabled after payment) -----
+  downloadBtn.addEventListener('click', () => {
+    if(!isPaid){
+      alert('Please complete checkout first.');
       return;
     }
-    const { url } = await r.json();
-    location.href = url;
-  }catch(err){
-    console.error(err);
-    alert("There was a problem starting checkout.");
-  }
-}
+    const { content, name } = buildDraftContent();
+    const email = (document.getElementById('buyerEmail')?.value || '').trim();
+    if(!email){
+      if(!confirm('No email entered. Continue to download anyway?')) return;
+    }
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${name}_Caregiver_Agreement.txt`);
+  });
 
-/* ========= INIT ========= */
-document.getElementById("btnNext").addEventListener("click", nextStep);
-document.getElementById("btnBack").addEventListener("click", prevStep);
-document.getElementById("btnBuy").addEventListener("click", startCheckout);
+  // ----- Init -----
+  toggleBoxes();
+  wireLivePreview();
+  refreshPreview();
+  applyLockState();
 
-function init(){
-  // success watermark removal if you later append success query
-  const u = new URLSearchParams(location.search);
-  if (u.get("success")==="true"){
-    document.body.classList.add("unlocked");
+  // Optional: allow quick manual unlock for admin testing via ?demo=1
+  if(urlParams.get('demo')==='1' && !isPaid){
+    isPaid = true;
+    applyLockState();
   }
-  showStep(0);
-}
-init();
 </script>
-
 </body>
 </html>
 
