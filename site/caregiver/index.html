@@ -22,7 +22,7 @@
       <input id="buyerEmail" class="border rounded w-full p-2 mb-3" placeholder="you@example.com"/>
 
       <label class="block text-sm font-medium mb-1">Your Name</label>
-      <input id="buyerName" class="border rounded w-full p-2 mb-4" placeholder="Jane Doe"/>
+      <input id="buyerName" class="border rounded w-full p-2 mb-4" placeholder="Your full name"/>
 
       <h2 class="text-xl font-bold mb-3">Step 2 — Parties & Basics</h2>
 
@@ -63,8 +63,9 @@
       <label class="block text-sm font-medium mb-1">Typical Hours / Days</label>
       <textarea id="hoursSchedule" class="border rounded w-full p-2 mb-4" rows="2" placeholder="e.g., Mon–Fri, 9am–5pm; occasional weekends"></textarea>
 
+      <!-- 🔥 NEW (ADDED, not replacing): Service Categories -->
       <h2 class="text-xl font-bold mb-3">Step 3 — Service Categories & Details</h2>
-      <p class="text-sm text-gray-600 mb-3">Choose what the Caregiver will do. If you select a box, please describe the tasks.</p>
+      <p class="text-sm text-gray-600 mb-3">Choose what the Caregiver will do. If you select a box, describe the tasks.</p>
 
       <div class="space-y-3">
         <!-- Personal Care -->
@@ -72,28 +73,28 @@
           <input type="checkbox" id="svcPersonal" class="mt-1"/>
           <span><strong>Personal Care</strong> (bathing, grooming, dressing, toileting, mobility assistance)</span>
         </label>
-        <textarea id="svcPersonalDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe any limits or specifics (e.g., use of transfer belt, bathing schedule)"></textarea>
+        <textarea id="svcPersonalDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe any limits or specifics (e.g., transfer belt, bathing schedule)"></textarea>
 
         <!-- Medical/Health Support -->
         <label class="flex items-start gap-2 mt-3">
           <input type="checkbox" id="svcMedical" class="mt-1"/>
-          <span><strong>Medical/Health Support</strong> (medication reminders/administration, coordinating appointments, monitoring vitals—specify limits)</span>
+          <span><strong>Medical/Health Support</strong> (medication reminders/administration, coordinating appointments, monitoring vital signs — specify limits)</span>
         </label>
         <textarea id="svcMedicalDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., reminders only (no injections); record BP daily; accompany to cardiology visits"></textarea>
 
         <!-- Household Tasks -->
         <label class="flex items-start gap-2 mt-3">
           <input type="checkbox" id="svcHousehold" class="mt-1"/>
-          <span><strong>Household Tasks</strong> (light housekeeping, laundry, dishes, meal planning/prep, errands like groceries)</span>
+          <span><strong>Household Tasks</strong> (light housekeeping, laundry, dishes, meal planning/prep, grocery errands)</span>
         </label>
-        <textarea id="svcHouseholdDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., vacuum weekly; laundry 1x/week; shop at Whole Foods with client card"></textarea>
+        <textarea id="svcHouseholdDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., vacuum weekly; laundry 1x/week; meal-prep low-salt; shop with client card"></textarea>
 
         <!-- Companionship -->
         <label class="flex items-start gap-2 mt-3">
           <input type="checkbox" id="svcCompanionship" class="mt-1"/>
           <span><strong>Companionship</strong> (social interaction, reading, hobbies, transportation to outings)</span>
         </label>
-        <textarea id="svcCompanionshipDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., daily walk 20 minutes; read newspaper; drive to senior center Fridays"></textarea>
+        <textarea id="svcCompanionshipDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., daily walk 20 min; read newspaper; drive to senior center Fridays"></textarea>
 
         <!-- Other -->
         <label class="flex items-start gap-2 mt-3">
@@ -103,6 +104,7 @@
         <textarea id="svcOtherDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe any additional duties not listed above"></textarea>
       </div>
 
+      <!-- 🔥 NEW (ADDED): Reimbursement -->
       <h2 class="text-xl font-bold mt-6 mb-3">Step 4 — Reimbursement Policy</h2>
       <label class="block text-sm font-medium mb-1">Will the Caregiver be reimbursed for pre-approved, necessary expenses incurred on behalf of the Client?</label>
       <select id="reimburseAllowed" class="border rounded w-full p-2 mb-3">
@@ -122,6 +124,7 @@
         <input id="rbOtherText" class="border rounded w-full p-2 mb-3" placeholder="e.g., photo of purchase, delivery confirmation"/>
       </div>
 
+      <!-- 🔥 NEW (ADDED): Insurance -->
       <h2 class="text-xl font-bold mt-6 mb-3">Step 5 — Insurance Requirement</h2>
       <label class="block text-sm font-medium mb-1">Is the Caregiver required to maintain insurance?</label>
       <select id="insuranceRequired" class="border rounded w-full p-2 mb-3">
@@ -145,11 +148,6 @@
       <h2 class="text-xl font-bold mt-6 mb-3">Step 6 — Notes (optional)</h2>
       <textarea id="specialNotes" class="border rounded w-full p-2 mb-4" rows="3" placeholder="Any special instructions or limits to include verbatim in the agreement"></textarea>
 
-      <div class="flex items-center gap-2">
-        <button id="updatePreview" class="bg-gray-800 text-white px-4 py-2 rounded">Update Preview</button>
-        <span class="text-xs text-gray-500">Preview updates live before purchase.</span>
-      </div>
-
       <hr class="my-5"/>
 
       <h2 class="text-xl font-bold mb-3">Step 7 — Checkout</h2>
@@ -159,7 +157,7 @@
 
     <!-- RIGHT: PREVIEW -->
     <section class="bg-white border rounded-xl shadow p-5 relative">
-      <h2 class="text-xl font-bold mb-3">Preview (Unpaid Draft)</h2>
+      <h2 class="text-xl font-bold mb-3">Preview (Updates as you type)</h2>
       <div class="relative min-h-[420px]">
         <pre id="preview" class="text-sm whitespace-pre-wrap leading-5"></pre>
         <div class="pointer-events-none select-none absolute inset-0 flex items-center justify-center text-6xl font-black text-emerald-500/10">
@@ -171,20 +169,21 @@
 
   <script>
   // === CONFIG ===
-  const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // Caregiver price (provided by you)
+  const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // Caregiver price you provided
 
-  // === Helpers: show/hide groups ===
+  // === Show/hide groups ===
   const reimburseAllowed = document.getElementById('reimburseAllowed');
   const reimburseBox = document.getElementById('reimburseBox');
   const insuranceRequired = document.getElementById('insuranceRequired');
   const insuranceBox = document.getElementById('insuranceBox');
 
-  reimburseAllowed.addEventListener('change', () => {
+  function toggleBoxes() {
     reimburseBox.classList.toggle('hidden', reimburseAllowed.value !== 'Yes');
-  });
-  insuranceRequired.addEventListener('change', () => {
     insuranceBox.classList.toggle('hidden', insuranceRequired.value !== 'Yes');
-  });
+  }
+
+  reimburseAllowed.addEventListener('change', () => { toggleBoxes(); refreshPreview(); });
+  insuranceRequired.addEventListener('change', () => { toggleBoxes(); refreshPreview(); });
 
   // === Build final content for preview & draft save ===
   function buildDraftContent() {
@@ -287,17 +286,20 @@ Caregiver: _________________________   Date: _____________
     return { content, product: "Caregiver Services Agreement", name: buyerName || caregiverName || clientName || "Customer" };
   }
 
-  // === Live preview ===
+  // === Live preview (updates while you type) ===
   function refreshPreview() {
     const { content } = buildDraftContent();
     document.getElementById('preview').textContent = content;
   }
-  document.getElementById('updatePreview').addEventListener('click', refreshPreview);
-  // Also refresh when toggling Yes/No sections
-  reimburseAllowed.addEventListener('change', refreshPreview);
-  insuranceRequired.addEventListener('change', refreshPreview);
-  // Initial preview
-  refreshPreview();
+
+  // Attach live listeners to all inputs/textareas/selects/checkboxes
+  function wireLivePreview() {
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(el => {
+      const evt = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
+      el.addEventListener(evt, refreshPreview);
+    });
+  }
 
   // === Save draft to Netlify function ===
   async function saveDraft() {
@@ -307,12 +309,7 @@ Caregiver: _________________________   Date: _____________
     const r = await fetch('/.netlify/functions/save-draft', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        name,
-        product,
-        content
-      })
+      body: JSON.stringify({ email, name, product, content })
     });
     if (!r.ok) throw new Error('save-draft failed');
     return r.json(); // { draftId }
@@ -323,9 +320,6 @@ Caregiver: _________________________   Date: _____________
     try {
       const email = document.getElementById('buyerEmail').value.trim();
       if (!email) { alert('Please enter your email.'); return; }
-
-      // Ensure preview is fresh
-      refreshPreview();
 
       const { draftId } = await saveDraft();
 
@@ -352,9 +346,15 @@ Caregiver: _________________________   Date: _____________
       alert('There was a problem. Please check the required fields.');
     }
   });
+
+  // init
+  toggleBoxes();
+  wireLivePreview();
+  refreshPreview(); // show placeholders immediately
   </script>
 </body>
 </html>
+
 
 </script>
 </body></html>
