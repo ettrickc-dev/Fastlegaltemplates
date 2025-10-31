@@ -1,261 +1,361 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Caregiver Services Agreement — Fast Legal Templates</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>
-  body{background:#f8fafc}
-  .wm:after{
-    content:"UNPAID DRAFT";
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-size:56px; font-weight:900; color:rgba(16,185,129,0.08); pointer-events:none;
-    transform:rotate(-12deg);
-  }
-</style>
 </head>
-<body class="min-h-screen">
-  <header class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+<body class="bg-gray-50 text-gray-900">
+  <header class="max-w-6xl mx-auto p-6 flex items-center justify-between">
     <a href="/" class="text-sm text-gray-600">&larr; Home</a>
-    <h1 class="text-xl sm:text-2xl font-extrabold text-emerald-700">Caregiver Services Agreement</h1>
+    <h1 class="text-2xl font-extrabold text-emerald-700">Caregiver Services Agreement</h1>
+    <div></div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 pb-16 grid lg:grid-cols-2 gap-6">
+  <main class="max-w-6xl mx-auto p-6 grid lg:grid-cols-2 gap-6">
     <!-- LEFT: FORM -->
-    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
-      <h2 class="text-lg font-bold mb-3">Answer these questions</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Delivery -->
-        <div class="sm:col-span-2">
-          <label class="block text-sm font-medium">Your Email (for delivery)</label>
-          <input id="buyerEmail" class="mt-1 w-full border rounded-lg p-2" placeholder="you@example.com" />
-        </div>
-        <div class="sm:col-span-2">
-          <label class="block text-sm font-medium">Your Full Name</label>
-          <input id="buyerName" class="mt-1 w-full border rounded-lg p-2" placeholder="Jane Doe" />
-        </div>
+    <section class="bg-white border rounded-xl shadow p-5">
+      <h2 class="text-xl font-bold mb-3">Step 1 — About You</h2>
 
-        <!-- Parties -->
-        <div>
-          <label class="block text-sm font-medium">Client/Family Name</label>
-          <input id="clientName" class="mt-1 w-full border rounded-lg p-2" placeholder="Client/Family (hiring party)" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Caregiver Name</label>
-          <input id="caregiverName" class="mt-1 w-full border rounded-lg p-2" placeholder="Caregiver (worker)" />
-        </div>
+      <label class="block text-sm font-medium mb-1">Your Email</label>
+      <input id="buyerEmail" class="border rounded w-full p-2 mb-3" placeholder="you@example.com"/>
 
-        <!-- Relationship -->
-        <div>
-          <label class="block text-sm font-medium">Relationship Type</label>
-          <select id="relationshipType" class="mt-1 w-full border rounded-lg p-2">
-            <option>Employee (W-2)</option>
-            <option>Independent Contractor (1099)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Start Date</label>
-          <input id="startDate" type="date" class="mt-1 w-full border rounded-lg p-2" />
-        </div>
+      <label class="block text-sm font-medium mb-1">Your Name</label>
+      <input id="buyerName" class="border rounded w-full p-2 mb-4" placeholder="Jane Doe"/>
 
-        <!-- Pay -->
-        <div>
-          <label class="block text-sm font-medium">Pay Rate</label>
-          <input id="payRate" class="mt-1 w-full border rounded-lg p-2" placeholder="$25/hour or $900/week" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Pay Schedule</label>
-          <select id="paySchedule" class="mt-1 w-full border rounded-lg p-2">
-            <option>Weekly</option>
-            <option>Biweekly</option>
-            <option>Monthly</option>
-            <option>Per Shift</option>
-          </select>
-        </div>
+      <h2 class="text-xl font-bold mb-3">Step 2 — Parties & Basics</h2>
 
-        <!-- Hours / Duties -->
-        <div>
-          <label class="block text-sm font-medium">Typical Hours</label>
-          <input id="hours" class="mt-1 w-full border rounded-lg p-2" placeholder="Mon–Fri 9am–5pm" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Work Location</label>
-          <input id="location" class="mt-1 w-full border rounded-lg p-2" placeholder="123 Main St, City, State" />
-        </div>
-        <div class="sm:col-span-2">
-          <label class="block text-sm font-medium">Duties (comma or line-separated)</label>
-          <textarea id="duties" rows="3" class="mt-1 w-full border rounded-lg p-2" placeholder="Companionship, meal prep, bathing assistance, meds reminders, light housekeeping"></textarea>
-        </div>
+      <label class="block text-sm font-medium mb-1">Client (person receiving care)</label>
+      <input id="clientName" class="border rounded w-full p-2 mb-3" placeholder="Client Full Name"/>
 
-        <!-- Time off / termination -->
-        <div>
-          <label class="block text-sm font-medium">Paid Time Off</label>
-          <input id="pto" class="mt-1 w-full border rounded-lg p-2" placeholder="5 days PTO per year; unpaid sick days permitted" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Termination Notice</label>
-          <input id="termination" class="mt-1 w-full border rounded-lg p-2" placeholder="7 days notice by either party" />
-        </div>
+      <label class="block text-sm font-medium mb-1">Caregiver</label>
+      <input id="caregiverName" class="border rounded w-full p-2 mb-3" placeholder="Caregiver Full Name"/>
 
-        <!-- Legal bits -->
-        <div>
-          <label class="block text-sm font-medium">Confidentiality (Yes/No)</label>
-          <select id="confidentiality" class="mt-1 w-full border rounded-lg p-2">
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium">Governing Law (State)</label>
-          <input id="stateLaw" class="mt-1 w-full border rounded-lg p-2" placeholder="New York" />
-        </div>
+      <label class="block text-sm font-medium mb-1">Arrangement Type</label>
+      <select id="arrangementType" class="border rounded w-full p-2 mb-3">
+        <option value="W-2 Employee">W-2 Employee</option>
+        <option value="1099 Independent Contractor">1099 Independent Contractor</option>
+      </select>
 
-        <div class="sm:col-span-2">
-          <label class="block text-sm font-medium">Special Notes</label>
-          <textarea id="notes" rows="2" class="mt-1 w-full border rounded-lg p-2" placeholder="Live-in arrangement? Mileage reimbursement? Training?"></textarea>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Start Date</label>
+          <input type="date" id="startDate" class="border rounded w-full p-2 mb-3"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Care Location (city/state)</label>
+          <input id="careLocation" class="border rounded w-full p-2 mb-3" placeholder="e.g., Scarsdale, NY"/>
         </div>
       </div>
 
-      <div class="mt-6 flex items-center gap-3">
-        <button id="btnPreview" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">Update Preview</button>
-        <button id="btnBuy" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">Buy Now</button>
-        <span class="text-xs text-gray-500">Price is set in Stripe.</span>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Hourly Rate (or flat)</label>
+          <input id="payRate" class="border rounded w-full p-2 mb-3" placeholder="$28/hour"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Pay Schedule</label>
+          <input id="paySchedule" class="border rounded w-full p-2 mb-3" placeholder="weekly / biweekly / monthly"/>
+        </div>
       </div>
+
+      <label class="block text-sm font-medium mb-1">Typical Hours / Days</label>
+      <textarea id="hoursSchedule" class="border rounded w-full p-2 mb-4" rows="2" placeholder="e.g., Mon–Fri, 9am–5pm; occasional weekends"></textarea>
+
+      <h2 class="text-xl font-bold mb-3">Step 3 — Service Categories & Details</h2>
+      <p class="text-sm text-gray-600 mb-3">Choose what the Caregiver will do. If you select a box, please describe the tasks.</p>
+
+      <div class="space-y-3">
+        <!-- Personal Care -->
+        <label class="flex items-start gap-2">
+          <input type="checkbox" id="svcPersonal" class="mt-1"/>
+          <span><strong>Personal Care</strong> (bathing, grooming, dressing, toileting, mobility assistance)</span>
+        </label>
+        <textarea id="svcPersonalDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe any limits or specifics (e.g., use of transfer belt, bathing schedule)"></textarea>
+
+        <!-- Medical/Health Support -->
+        <label class="flex items-start gap-2 mt-3">
+          <input type="checkbox" id="svcMedical" class="mt-1"/>
+          <span><strong>Medical/Health Support</strong> (medication reminders/administration, coordinating appointments, monitoring vitals—specify limits)</span>
+        </label>
+        <textarea id="svcMedicalDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., reminders only (no injections); record BP daily; accompany to cardiology visits"></textarea>
+
+        <!-- Household Tasks -->
+        <label class="flex items-start gap-2 mt-3">
+          <input type="checkbox" id="svcHousehold" class="mt-1"/>
+          <span><strong>Household Tasks</strong> (light housekeeping, laundry, dishes, meal planning/prep, errands like groceries)</span>
+        </label>
+        <textarea id="svcHouseholdDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., vacuum weekly; laundry 1x/week; shop at Whole Foods with client card"></textarea>
+
+        <!-- Companionship -->
+        <label class="flex items-start gap-2 mt-3">
+          <input type="checkbox" id="svcCompanionship" class="mt-1"/>
+          <span><strong>Companionship</strong> (social interaction, reading, hobbies, transportation to outings)</span>
+        </label>
+        <textarea id="svcCompanionshipDetails" class="border rounded w-full p-2" rows="2" placeholder="e.g., daily walk 20 minutes; read newspaper; drive to senior center Fridays"></textarea>
+
+        <!-- Other -->
+        <label class="flex items-start gap-2 mt-3">
+          <input type="checkbox" id="svcOther" class="mt-1"/>
+          <span><strong>Other services</strong> (add anything else)</span>
+        </label>
+        <textarea id="svcOtherDetails" class="border rounded w-full p-2" rows="2" placeholder="Describe any additional duties not listed above"></textarea>
+      </div>
+
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 4 — Reimbursement Policy</h2>
+      <label class="block text-sm font-medium mb-1">Will the Caregiver be reimbursed for pre-approved, necessary expenses incurred on behalf of the Client?</label>
+      <select id="reimburseAllowed" class="border rounded w-full p-2 mb-3">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div id="reimburseBox" class="hidden">
+        <p class="text-sm text-gray-600 mb-2">If Yes, select required documentation for reimbursement:</p>
+        <div class="grid sm:grid-cols-2 gap-2 mb-2">
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Original receipts"/> Original receipts</label>
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Mileage log"/> Mileage log</label>
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Itemized invoice"/> Itemized invoice</label>
+          <label class="flex items-center gap-2"><input type="checkbox" class="rbDoc" value="Written pre-approval"/> Written pre-approval</label>
+        </div>
+        <label class="block text-sm font-medium mb-1">Other documentation (optional)</label>
+        <input id="rbOtherText" class="border rounded w-full p-2 mb-3" placeholder="e.g., photo of purchase, delivery confirmation"/>
+      </div>
+
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 5 — Insurance Requirement</h2>
+      <label class="block text-sm font-medium mb-1">Is the Caregiver required to maintain insurance?</label>
+      <select id="insuranceRequired" class="border rounded w-full p-2 mb-3">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div id="insuranceBox" class="hidden">
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Professional Liability (min coverage)</label>
+            <input id="insProf" class="border rounded w-full p-2 mb-3" placeholder="$1,000,000 per claim"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">General Liability (min coverage)</label>
+            <input id="insGen" class="border rounded w-full p-2 mb-3" placeholder="$1,000,000 per occurrence"/>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-xl font-bold mt-6 mb-3">Step 6 — Notes (optional)</h2>
+      <textarea id="specialNotes" class="border rounded w-full p-2 mb-4" rows="3" placeholder="Any special instructions or limits to include verbatim in the agreement"></textarea>
+
+      <div class="flex items-center gap-2">
+        <button id="updatePreview" class="bg-gray-800 text-white px-4 py-2 rounded">Update Preview</button>
+        <span class="text-xs text-gray-500">Preview updates live before purchase.</span>
+      </div>
+
+      <hr class="my-5"/>
+
+      <h2 class="text-xl font-bold mb-3">Step 7 — Checkout</h2>
+      <button id="startCheckout" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded">Buy Now</button>
+      <p class="text-xs text-gray-500 mt-2">Stripe checkout opens with your caregiver template price.</p>
     </section>
 
     <!-- RIGHT: PREVIEW -->
-    <section class="bg-white border rounded-xl shadow-sm p-4 sm:p-6">
-      <h2 class="text-lg font-bold mb-3">Live Preview (watermark removed after payment)</h2>
-      <div class="relative wm rounded-lg border p-4">
-        <pre id="preview" class="whitespace-pre-wrap text-sm leading-6 text-gray-800 select-text"></pre>
+    <section class="bg-white border rounded-xl shadow p-5 relative">
+      <h2 class="text-xl font-bold mb-3">Preview (Unpaid Draft)</h2>
+      <div class="relative min-h-[420px]">
+        <pre id="preview" class="text-sm whitespace-pre-wrap leading-5"></pre>
+        <div class="pointer-events-none select-none absolute inset-0 flex items-center justify-center text-6xl font-black text-emerald-500/10">
+          UNPAID DRAFT
+        </div>
       </div>
     </section>
   </main>
 
-<script>
-const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // Caregiver price you provided
-const PRODUCT_NAME = "Caregiver Services Agreement";
+  <script>
+  // === CONFIG ===
+  const PRICE_ID = "price_1SKKSnHcizSl783nL20brMXo"; // Caregiver price (provided by you)
 
-function v(id){ return (document.getElementById(id)?.value || "").trim(); }
+  // === Helpers: show/hide groups ===
+  const reimburseAllowed = document.getElementById('reimburseAllowed');
+  const reimburseBox = document.getElementById('reimburseBox');
+  const insuranceRequired = document.getElementById('insuranceRequired');
+  const insuranceBox = document.getElementById('insuranceBox');
 
-function listFromText(t){
-  return t.split(/\n|,/).map(s=>s.trim()).filter(Boolean).map(s=>`• ${s}`).join('\n');
-}
-
-function buildPreview(){
-  const buyerEmail = v('buyerEmail') || '[you@example.com]';
-  const buyerName = v('buyerName') || '[Your Name]';
-  const clientName = v('clientName') || '[Client/Family]';
-  const caregiverName = v('caregiverName') || '[Caregiver]';
-  const relationshipType = v('relationshipType') || 'Employee (W-2)';
-  const startDate = v('startDate') || '[Start Date]';
-  const payRate = v('payRate') || 'TBD';
-  const paySchedule = v('paySchedule') || 'Weekly';
-  const hours = v('hours') || 'TBD';
-  const location = v('location') || 'Client residence';
-  const duties = listFromText(v('duties') || 'Companionship, meal prep, bathing assistance, meds reminders, light housekeeping');
-  const pto = v('pto') || 'As required by law or agreed in writing';
-  const termination = v('termination') || '7 days notice by either party';
-  const conf = v('confidentiality') || 'Yes';
-  const stateLaw = v('stateLaw') || 'New York';
-  const notes = v('notes') || '';
-
-  return `CAREGIVER SERVICES AGREEMENT
-
-This Agreement is between ${clientName} ("Client") and ${caregiverName} ("Caregiver"), effective ${startDate}.
-
-1) RELATIONSHIP
-The parties intend a ${relationshipType}. Nothing here creates a partnership or other relationship. ${relationshipType.includes('Employee') ? 'Client will handle required payroll, taxes, and withholdings.' : 'Caregiver is responsible for all taxes and no benefits are provided.'}
-
-2) SERVICES & SCHEDULE
-Location: ${location}
-Typical Hours: ${hours}
-Duties:
-${duties}
-
-3) COMPENSATION
-Rate: ${payRate}
-Pay Schedule: ${paySchedule}
-Overtime and any differentials will be paid as required by applicable law (if Employee).
-
-4) TIME OFF / SICK LEAVE
-${pto}
-
-5) CONFIDENTIALITY
-${conf === 'Yes' ? 'Caregiver agrees to keep Client’s personal, medical, and financial information confidential.' : 'No special confidentiality obligations in addition to applicable law.'}
-
-6) SAFETY & PROFESSIONAL CONDUCT
-Caregiver will perform services diligently, follow reasonable household rules, and promptly report issues affecting the Client’s health or safety.
-
-7) TERMINATION
-${termination}
-
-8) GOVERNING LAW
-This Agreement is governed by the laws of ${stateLaw}.
-
-9) ENTIRE AGREEMENT
-This is the entire agreement and may be amended only in a signed writing.
-
-SPECIAL NOTES
-${notes || '(none)'}
-
-SIGNATURES
-Client: ____________________________   Date: ____________
-Caregiver: _________________________  Date: ____________
-
-Prepared for: ${buyerName} (${buyerEmail})
-(Your download includes: Agreement (DOCX), Memorandum, Exhibits Index, and a simple Procedures/Checklist.)`;
-}
-
-function setPreview(){ document.getElementById('preview').textContent = buildPreview(); }
-setPreview();
-document.getElementById('btnPreview').addEventListener('click', setPreview);
-
-// Save draft to server
-async function saveDraft(){
-  const email = v('buyerEmail');
-  const name = v('buyerName');
-  const content = buildPreview();
-  const product = PRODUCT_NAME;
-
-  const r = await fetch('/.netlify/functions/save-draft', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ email, name, product, content })
+  reimburseAllowed.addEventListener('change', () => {
+    reimburseBox.classList.toggle('hidden', reimburseAllowed.value !== 'Yes');
   });
-  if(!r.ok) throw new Error('save-draft failed');
-  return r.json(); // { draftId }
-}
+  insuranceRequired.addEventListener('change', () => {
+    insuranceBox.classList.toggle('hidden', insuranceRequired.value !== 'Yes');
+  });
 
-// Start checkout
-document.getElementById('btnBuy').addEventListener('click', async () => {
-  try{
-    const email = v('buyerEmail'), name = v('buyerName');
-    if(!email){ alert('Please enter your email.'); return; }
-    if(!name){ alert('Please enter your full name.'); return; }
-    setPreview();
+  // === Build final content for preview & draft save ===
+  function buildDraftContent() {
+    const buyerName = document.getElementById('buyerName').value.trim();
+    const clientName = document.getElementById('clientName').value.trim();
+    const caregiverName = document.getElementById('caregiverName').value.trim();
+    const arrangementType = document.getElementById('arrangementType').value;
+    const startDate = document.getElementById('startDate').value;
+    const careLocation = document.getElementById('careLocation').value.trim();
+    const payRate = document.getElementById('payRate').value.trim();
+    const paySchedule = document.getElementById('paySchedule').value.trim();
+    const hoursSchedule = document.getElementById('hoursSchedule').value.trim();
+    const specialNotes = document.getElementById('specialNotes').value.trim();
 
-    const { draftId } = await saveDraft();
-    const r = await fetch('/.netlify/functions/create-checkout', {
-      method:'POST', headers:{'Content-Type':'application/json'},
+    // Services
+    const svc = [];
+    if (document.getElementById('svcPersonal').checked) {
+      svc.push({label: "Personal Care", details: document.getElementById('svcPersonalDetails').value.trim()});
+    }
+    if (document.getElementById('svcMedical').checked) {
+      svc.push({label: "Medical/Health Support", details: document.getElementById('svcMedicalDetails').value.trim()});
+    }
+    if (document.getElementById('svcHousehold').checked) {
+      svc.push({label: "Household Tasks", details: document.getElementById('svcHouseholdDetails').value.trim()});
+    }
+    if (document.getElementById('svcCompanionship').checked) {
+      svc.push({label: "Companionship", details: document.getElementById('svcCompanionshipDetails').value.trim()});
+    }
+    if (document.getElementById('svcOther').checked) {
+      svc.push({label: "Other Services", details: document.getElementById('svcOtherDetails').value.trim()});
+    }
+
+    // Reimbursement
+    const reimb = reimburseAllowed.value;
+    let rbDocs = [];
+    document.querySelectorAll('.rbDoc:checked').forEach(cb => rbDocs.push(cb.value));
+    const rbOther = document.getElementById('rbOtherText').value.trim();
+
+    // Insurance
+    const insReq = insuranceRequired.value;
+    const insProf = document.getElementById('insProf')?.value.trim() || "";
+    const insGen  = document.getElementById('insGen')?.value.trim() || "";
+
+    const svcLines = svc.length === 0
+      ? "None selected."
+      : svc.map(s => `• ${s.label}${s.details ? ` — ${s.details}` : ""}`).join('\n');
+
+    const reimbBlock = reimb === 'Yes'
+      ? `Reimbursement: Allowed for pre-approved, necessary expenses incurred on behalf of the Client.
+Required documentation: ${rbDocs.length ? rbDocs.join(', ') : "as requested"}${rbOther ? `; Other: ${rbOther}` : ""}.`
+      : `Reimbursement: Not allowed without prior written approval.`;
+
+    const insuranceBlock = insReq === 'Yes'
+      ? `Caregiver Insurance: Required. Minimum coverage: Professional Liability ${insProf || "(specify)"}; General Liability ${insGen || "(specify)"}.`
+      : `Caregiver Insurance: Not required under this Agreement (unless required by law).`;
+
+    // Mandatory clauses
+    const hipaa = `Confidentiality and Privacy (HIPAA Compliance)
+The Caregiver acknowledges access to private, confidential, and protected health information (PHI) relating to the Client and agrees:
+1) To maintain the strict confidentiality of all Client information;
+2) Not to disclose such information to third parties without the Client's or legal representative's explicit written consent, unless required by law; and
+3) To comply with all applicable state and federal privacy laws, including HIPAA, to the extent applicable.`;
+
+    const indemn = `Indemnification
+The Caregiver agrees to indemnify and hold harmless the Client from and against any and all claims, losses, damages, or liability arising from the Caregiver’s negligence, gross misconduct, or intentional acts.`;
+
+    const content = `
+CAREGIVER SERVICES AGREEMENT
+
+Client: ${clientName || "[Client Name]"}
+Caregiver: ${caregiverName || "[Caregiver Name]"}
+Arrangement Type: ${arrangementType}
+Start Date: ${startDate || "[Start Date]"}
+Care Location: ${careLocation || "[City/State]"}
+
+Compensation
+Rate: ${payRate || "[Rate]"}
+Pay Schedule: ${paySchedule || "[Schedule]"}
+Typical Hours/Days: ${hoursSchedule || "[e.g., Mon–Fri, 9am–5pm]"}
+
+Scope of Services
+${svcLines}
+
+${reimbBlock}
+
+${insuranceBlock}
+
+${hipaa}
+
+${indemn}
+
+Special Notes (if any)
+${specialNotes || "(none)"}
+
+Signatures
+Client: ____________________________   Date: _____________
+Caregiver: _________________________   Date: _____________
+`.trim();
+
+    return { content, product: "Caregiver Services Agreement", name: buyerName || caregiverName || clientName || "Customer" };
+  }
+
+  // === Live preview ===
+  function refreshPreview() {
+    const { content } = buildDraftContent();
+    document.getElementById('preview').textContent = content;
+  }
+  document.getElementById('updatePreview').addEventListener('click', refreshPreview);
+  // Also refresh when toggling Yes/No sections
+  reimburseAllowed.addEventListener('change', refreshPreview);
+  insuranceRequired.addEventListener('change', refreshPreview);
+  // Initial preview
+  refreshPreview();
+
+  // === Save draft to Netlify function ===
+  async function saveDraft() {
+    const email = document.getElementById('buyerEmail').value.trim();
+    const { content, product, name } = buildDraftContent();
+
+    const r = await fetch('/.netlify/functions/save-draft', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        draftId,
         email,
-        priceId: PRICE_ID,
-        successPath: '/caregiver/success.html'
+        name,
+        product,
+        content
       })
     });
-    if(!r.ok){
-      const t = await r.text();
-      console.error('create-checkout failed:', t);
-      alert('Problem starting checkout. Please try again.');
-      return;
-    }
-    const { url } = await r.json();
-    location.href = url;
-  }catch(e){
-    console.error(e);
-    alert('There was a problem. Please try again.');
+    if (!r.ok) throw new Error('save-draft failed');
+    return r.json(); // { draftId }
   }
-});
+
+  // === Start Stripe checkout ===
+  document.getElementById('startCheckout').addEventListener('click', async () => {
+    try {
+      const email = document.getElementById('buyerEmail').value.trim();
+      if (!email) { alert('Please enter your email.'); return; }
+
+      // Ensure preview is fresh
+      refreshPreview();
+
+      const { draftId } = await saveDraft();
+
+      const r = await fetch('/.netlify/functions/create-checkout', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          draftId,
+          email,
+          priceId: PRICE_ID,
+          successPath: '/caregiver/success.html'
+        })
+      });
+      if (!r.ok) {
+        const t = await r.text();
+        console.error('create-checkout failed:', t);
+        alert('Problem starting checkout.');
+        return;
+      }
+      const { url } = await r.json();
+      location.href = url;
+    } catch (e) {
+      console.error(e);
+      alert('There was a problem. Please check the required fields.');
+    }
+  });
+  </script>
+</body>
+</html>
+
 </script>
 </body></html>
 
